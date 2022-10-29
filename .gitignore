@@ -1,0 +1,5 @@
+node_modules
+.env
+notes.txt
+contracts
+phishing_data_final.json

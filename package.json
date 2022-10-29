@@ -1,0 +1,48 @@
+{
+  "name": "omnid-proxy-rpc",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "dev": "tsup src/index.ts --format cjs --outDir dist --dts --legacy-output --clean --keepNames --watch",
+    "devbuild": "tsup src/index.ts --format cjs --outDir dist --dts --legacy-output --clean --keepNames",
+    "build": "tsup src/index.ts --format cjs --outDir dist --dts  --legacy-output --clean --minify --keepNames",
+    "start": "node ./dist/index.js",
+    "startwithtor": "run-p startwithtor:*",
+    "startwithtor:astart": "node ./dist/index.js",
+    "startwithtor:tor": "./setup_tor.sh",
+    "startwithtor:lightnode": "npx @lightclients/kevlar",
+    "startdev": "clear && nodemon ./dist/index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "cacheDirectories": [
+    "~/.solc-select/artifacts/",
+    "node_modules"
+  ],
+  "keywords": [],
+  "author": "Anudit Nagar",
+  "license": "ISC",
+  "dependencies": {
+    "@ethereumjs/tx": "^4.0.1",
+    "@ethersproject/address": "^5.7.0",
+    "@fastify/compress": "^6.1.1",
+    "@fastify/cors": "^8.1.1",
+    "@fastify/helmet": "^10.0.2",
+    "@fastify/static": "^6.5.0",
+    "@theconvospace/sdk": "^0.6.2",
+    "cross-fetch": "^3.1.5",
+    "dotenv": "^16.0.3",
+    "eth-phishing-detect": "^1.2.0",
+    "ethereumjs-util": "^7.1.5",
+    "fastest-levenshtein": "^1.0.16",
+    "fastify": "^4.9.2",
+    "megahash": "^1.0.5",
+    "socks-proxy-agent": "^7.0.0"
+  },
+  "devDependencies": {
+    "@types/node": "^18.11.5",
+    "npm-run-all": "^4.1.5",
+    "tsup": "^6.3.0",
+    "typescript": "^4.8.4"
+  }
+}

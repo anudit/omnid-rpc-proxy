@@ -1,0 +1,493 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <title>Omnid - RPC Proxy</title>
+        <meta name="author" content="Anudit Nagar">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/github-markdown-css/5.1.0/github-markdown-dark.min.css" integrity="sha512-USRvpT7dJFA7mrRx4+esmy+2mYr8vlgmDLFpkNeVEd+D5CgQvULKPYVnDV97Ywfek+e//HdSA0NlaPe4oqkwfQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+        <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🛡️</text></svg>">
+        <meta name="title" content="Omnid - RPC Proxy">
+        <meta name="description" content="An open-source, self-hostable RPC Proxy that scans transactions before sending them to the chain for malicious/phishing activity.">
+        <meta property="og:type" content="website">
+        <meta property="og:url" content="https://rpc.omnid.space/">
+        <meta property="og:title" content="Omnid - RPC Proxy">
+        <meta property="og:description" content="An open-source, self-hostable RPC Proxy that scans transactions before sending them to the chain for malicious/phishing activity.">
+        <meta property="og:image" content="https://res.cloudinary.com/anudit/image/upload/v1663422373/convo/thumbnails.png">
+        <meta property="twitter:card" content="summary_large_image">
+        <meta property="twitter:url" content="https://rpc.omnid.space/">
+        <meta property="twitter:title" content="Omnid - RPC Proxy">
+        <meta property="twitter:description" content="An open-source, self-hostable RPC Proxy that scans transactions before sending them to the chain for malicious/phishing activity.">
+        <meta property="twitter:image" content="https://res.cloudinary.com/anudit/image/upload/v1663422373/convo/thumbnails.png">
+        <meta http-equiv="onion-location" content="http://omnid2kq4qppsp2a5hgeqok6ahkfo23tdtoe7km4uier4o43taxct5ad.onion" />
+    </head>
+    <style>
+        html {
+            scroll-behavior: smooth;
+        }
+      .markdown-body {
+          box-sizing: border-box;
+          min-width: 200px;
+          max-width: 980px;
+          margin: 0 auto;
+          padding: 45px;
+        }
+
+        @media (max-width: 767px) {
+          .markdown-body {
+            padding: 15px;
+          }
+        }
+        button {
+            color: black;
+        }
+        .mm {
+            background-image: url('data:image/svg+xml;utf8;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyMTIiIGhlaWdodD0iMTg5IiB2aWV3Qm94PSIwIDAgMjEyIDE4OSI+PGcgZmlsbD0ibm9uZSIgZmlsbC1ydWxlPSJldmVub2RkIj48cG9seWdvbiBmaWxsPSIjQ0RCREIyIiBwb2ludHM9IjYwLjc1IDE3My4yNSA4OC4zMTMgMTgwLjU2MyA4OC4zMTMgMTcxIDkwLjU2MyAxNjguNzUgMTA2LjMxMyAxNjguNzUgMTA2LjMxMyAxODAgMTA2LjMxMyAxODcuODc1IDg5LjQzOCAxODcuODc1IDY4LjYyNSAxNzguODc1Ii8+PHBvbHlnb24gZmlsbD0iI0NEQkRCMiIgcG9pbnRzPSIxMDUuNzUgMTczLjI1IDEzMi43NSAxODAuNTYzIDEzMi43NSAxNzEgMTM1IDE2OC43NSAxNTAuNzUgMTY4Ljc1IDE1MC43NSAxODAgMTUwLjc1IDE4Ny44NzUgMTMzLjg3NSAxODcuODc1IDExMy4wNjMgMTc4Ljg3NSIgdHJhbnNmb3JtPSJtYXRyaXgoLTEgMCAwIDEgMjU2LjUgMCkiLz48cG9seWdvbiBmaWxsPSIjMzkzOTM5IiBwb2ludHM9IjkwLjU2MyAxNTIuNDM4IDg4LjMxMyAxNzEgOTEuMTI1IDE2OC43NSAxMjAuMzc1IDE2OC43NSAxMjMuNzUgMTcxIDEyMS41IDE1Mi40MzggMTE3IDE0OS42MjUgOTQuNSAxNTAuMTg4Ii8+PHBvbHlnb24gZmlsbD0iI0Y4OUMzNSIgcG9pbnRzPSI3NS4zNzUgMjcgODguODc1IDU4LjUgOTUuMDYzIDE1MC4xODggMTE3IDE1MC4xODggMTIzLjc1IDU4LjUgMTM2LjEyNSAyNyIvPjxwb2x5Z29uIGZpbGw9IiNGODlEMzUiIHBvaW50cz0iMTYuMzEzIDk2LjE4OCAuNTYzIDE0MS43NSAzOS45MzggMTM5LjUgNjUuMjUgMTM5LjUgNjUuMjUgMTE5LjgxMyA2NC4xMjUgNzkuMzEzIDU4LjUgODMuODEzIi8+PHBvbHlnb24gZmlsbD0iI0Q4N0MzMCIgcG9pbnRzPSI0Ni4xMjUgMTAxLjI1IDkyLjI1IDEwMi4zNzUgODcuMTg4IDEyNiA2NS4yNSAxMjAuMzc1Ii8+PHBvbHlnb24gZmlsbD0iI0VBOEQzQSIgcG9pbnRzPSI0Ni4xMjUgMTAxLjgxMyA2NS4yNSAxMTkuODEzIDY1LjI1IDEzNy44MTMiLz48cG9seWdvbiBmaWxsPSIjRjg5RDM1IiBwb2ludHM9IjY1LjI1IDEyMC4zNzUgODcuNzUgMTI2IDk1LjA2MyAxNTAuMTg4IDkwIDE1MyA2NS4yNSAxMzguMzc1Ii8+PHBvbHlnb24gZmlsbD0iI0VCOEYzNSIgcG9pbnRzPSI2NS4yNSAxMzguMzc1IDYwLjc1IDE3My4yNSA5MC41NjMgMTUyLjQzOCIvPjxwb2x5Z29uIGZpbGw9IiNFQThFM0EiIHBvaW50cz0iOTIuMjUgMTAyLjM3NSA5NS4wNjMgMTUwLjE4OCA4Ni42MjUgMTI1LjcxOSIvPjxwb2x5Z29uIGZpbGw9IiNEODdDMzAiIHBvaW50cz0iMzkuMzc1IDEzOC45MzggNjUuMjUgMTM4LjM3NSA2MC43NSAxNzMuMjUiLz48cG9seWdvbiBmaWxsPSIjRUI4RjM1IiBwb2ludHM9IjEyLjkzOCAxODguNDM4IDYwLjc1IDE3My4yNSAzOS4zNzUgMTM4LjkzOCAuNTYzIDE0MS43NSIvPjxwb2x5Z29uIGZpbGw9IiNFODgyMUUiIHBvaW50cz0iODguODc1IDU4LjUgNjQuNjg4IDc4Ljc1IDQ2LjEyNSAxMDEuMjUgOTIuMjUgMTAyLjkzOCIvPjxwb2x5Z29uIGZpbGw9IiNERkNFQzMiIHBvaW50cz0iNjAuNzUgMTczLjI1IDkwLjU2MyAxNTIuNDM4IDg4LjMxMyAxNzAuNDM4IDg4LjMxMyAxODAuNTYzIDY4LjA2MyAxNzYuNjI1Ii8+PHBvbHlnb24gZmlsbD0iI0RGQ0VDMyIgcG9pbnRzPSIxMjEuNSAxNzMuMjUgMTUwLjc1IDE1Mi40MzggMTQ4LjUgMTcwLjQzOCAxNDguNSAxODAuNTYzIDEyOC4yNSAxNzYuNjI1IiB0cmFuc2Zvcm09Im1hdHJpeCgtMSAwIDAgMSAyNzIuMjUgMCkiLz48cG9seWdvbiBmaWxsPSIjMzkzOTM5IiBwb2ludHM9IjcwLjMxMyAxMTIuNSA2NC4xMjUgMTI1LjQzOCA4Ni4wNjMgMTE5LjgxMyIgdHJhbnNmb3JtPSJtYXRyaXgoLTEgMCAwIDEgMTUwLjE4OCAwKSIvPjxwb2x5Z29uIGZpbGw9IiNFODhGMzUiIHBvaW50cz0iMTIuMzc1IC41NjMgODguODc1IDU4LjUgNzUuOTM4IDI3Ii8+PHBhdGggZmlsbD0iIzhFNUEzMCIgZD0iTTEyLjM3NTAwMDIsMC41NjI1MDAwMDggTDIuMjUwMDAwMDMsMzEuNTAwMDAwNSBMNy44NzUwMDAxMiw2NS4yNTAwMDEgTDMuOTM3NTAwMDYsNjcuNTAwMDAxIEw5LjU2MjUwMDE0LDcyLjU2MjUgTDUuMDYyNTAwMDgsNzYuNTAwMDAxMSBMMTEuMjUsODIuMTI1MDAxMiBMNy4zMTI1MDAxMSw4NS41MDAwMDEzIEwxNi4zMTI1MDAyLDk2Ljc1MDAwMTQgTDU4LjUwMDAwMDksODMuODEyNTAxMiBDNzkuMTI1MDAxMiw2Ny4zMTI1MDA0IDg5LjI1MDAwMTMsNTguODc1MDAwMyA4OC44NzUwMDEzLDU4LjUwMDAwMDkgQzg4LjUwMDAwMTMsNTguMTI1MDAwOSA2My4wMDAwMDA5LDM4LjgxMjUwMDYgMTIuMzc1MDAwMiwwLjU2MjUwMDAwOCBaIi8+PGcgdHJhbnNmb3JtPSJtYXRyaXgoLTEgMCAwIDEgMjExLjUgMCkiPjxwb2x5Z29uIGZpbGw9IiNGODlEMzUiIHBvaW50cz0iMTYuMzEzIDk2LjE4OCAuNTYzIDE0MS43NSAzOS45MzggMTM5LjUgNjUuMjUgMTM5LjUgNjUuMjUgMTE5LjgxMyA2NC4xMjUgNzkuMzEzIDU4LjUgODMuODEzIi8+PHBvbHlnb24gZmlsbD0iI0Q4N0MzMCIgcG9pbnRzPSI0Ni4xMjUgMTAxLjI1IDkyLjI1IDEwMi4zNzUgODcuMTg4IDEyNiA2NS4yNSAxMjAuMzc1Ii8+PHBvbHlnb24gZmlsbD0iI0VBOEQzQSIgcG9pbnRzPSI0Ni4xMjUgMTAxLjgxMyA2NS4yNSAxMTkuODEzIDY1LjI1IDEzNy44MTMiLz48cG9seWdvbiBmaWxsPSIjRjg5RDM1IiBwb2ludHM9IjY1LjI1IDEyMC4zNzUgODcuNzUgMTI2IDk1LjA2MyAxNTAuMTg4IDkwIDE1MyA2NS4yNSAxMzguMzc1Ii8+PHBvbHlnb24gZmlsbD0iI0VCOEYzNSIgcG9pbnRzPSI2NS4yNSAxMzguMzc1IDYwLjc1IDE3My4yNSA5MCAxNTMiLz48cG9seWdvbiBmaWxsPSIjRUE4RTNBIiBwb2ludHM9IjkyLjI1IDEwMi4zNzUgOTUuMDYzIDE1MC4xODggODYuNjI1IDEyNS43MTkiLz48cG9seWdvbiBmaWxsPSIjRDg3QzMwIiBwb2ludHM9IjM5LjM3NSAxMzguOTM4IDY1LjI1IDEzOC4zNzUgNjAuNzUgMTczLjI1Ii8+PHBvbHlnb24gZmlsbD0iI0VCOEYzNSIgcG9pbnRzPSIxMi45MzggMTg4LjQzOCA2MC43NSAxNzMuMjUgMzkuMzc1IDEzOC45MzggLjU2MyAxNDEuNzUiLz48cG9seWdvbiBmaWxsPSIjRTg4MjFFIiBwb2ludHM9Ijg4Ljg3NSA1OC41IDY0LjY4OCA3OC43NSA0Ni4xMjUgMTAxLjI1IDkyLjI1IDEwMi45MzgiLz48cG9seWdvbiBmaWxsPSIjMzkzOTM5IiBwb2ludHM9IjcwLjMxMyAxMTIuNSA2NC4xMjUgMTI1LjQzOCA4Ni4wNjMgMTE5LjgxMyIgdHJhbnNmb3JtPSJtYXRyaXgoLTEgMCAwIDEgMTUwLjE4OCAwKSIvPjxwb2x5Z29uIGZpbGw9IiNFODhGMzUiIHBvaW50cz0iMTIuMzc1IC41NjMgODguODc1IDU4LjUgNzUuOTM4IDI3Ii8+PHBhdGggZmlsbD0iIzhFNUEzMCIgZD0iTTEyLjM3NTAwMDIsMC41NjI1MDAwMDggTDIuMjUwMDAwMDMsMzEuNTAwMDAwNSBMNy44NzUwMDAxMiw2NS4yNTAwMDEgTDMuOTM3NTAwMDYsNjcuNTAwMDAxIEw5LjU2MjUwMDE0LDcyLjU2MjUgTDUuMDYyNTAwMDgsNzYuNTAwMDAxMSBMMTEuMjUsODIuMTI1MDAxMiBMNy4zMTI1MDAxMSw4NS41MDAwMDEzIEwxNi4zMTI1MDAyLDk2Ljc1MDAwMTQgTDU4LjUwMDAwMDksODMuODEyNTAxMiBDNzkuMTI1MDAxMiw2Ny4zMTI1MDA0IDg5LjI1MDAwMTMsNTguODc1MDAwMyA4OC44NzUwMDEzLDU4LjUwMDAwMDkgQzg4LjUwMDAwMTMsNTguMTI1MDAwOSA2My4wMDAwMDA5LDM4LjgxMjUwMDYgMTIuMzc1MDAwMiwwLjU2MjUwMDAwOCBaIi8+PC9nPjwvZz48L3N2Zz4=');
+            width: 16px;
+            height: 16px;
+            background-size: contain;
+            cursor: pointer;
+            display: inline-block;
+            margin-left: 5px;
+        }
+        .copy {
+            background-image: url('data:image/svg+xml;utf8;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyMTIiIGhlaWdodD0iMTg5IiB2aWV3Qm94PSIwIDAgMjEyIDE4OSI+PGcgZmlsbD0ibm9uZSIgZmlsbC1ydWxlPSJldmVub2RkIj48cG9seWdvbiBmaWxsPSIjQ0RCREIyIiBwb2ludHM9IjYwLjc1IDE3My4yNSA4OC4zMTMgMTgwLjU2MyA4OC4zMTMgMTcxIDkwLjU2MyAxNjguNzUgMTA2LjMxMyAxNjguNzUgMTA2LjMxMyAxODAgMTA2LjMxMyAxODcuODc1IDg5LjQzOCAxODcuODc1IDY4LjYyNSAxNzguODc1Ii8+PHBvbHlnb24gZmlsbD0iI0NEQkRCMiIgcG9pbnRzPSIxMDUuNzUgMTczLjI1IDEzMi43NSAxODAuNTYzIDEzMi43NSAxNzEgMTM1IDE2OC43NSAxNTAuNzUgMTY4Ljc1IDE1MC43NSAxODAgMTUwLjc1IDE4Ny44NzUgMTMzLjg3NSAxODcuODc1IDExMy4wNjMgMTc4Ljg3NSIgdHJhbnNmb3JtPSJtYXRyaXgoLTEgMCAwIDEgMjU2LjUgMCkiLz48cG9seWdvbiBmaWxsPSIjMzkzOTM5IiBwb2ludHM9IjkwLjU2MyAxNTIuNDM4IDg4LjMxMyAxNzEgOTEuMTI1IDE2OC43NSAxMjAuMzc1IDE2OC43NSAxMjMuNzUgMTcxIDEyMS41IDE1Mi40MzggMTE3IDE0OS42MjUgOTQuNSAxNTAuMTg4Ii8+PHBvbHlnb24gZmlsbD0iI0Y4OUMzNSIgcG9pbnRzPSI3NS4zNzUgMjcgODguODc1IDU4LjUgOTUuMDYzIDE1MC4xODggMTE3IDE1MC4xODggMTIzLjc1IDU4LjUgMTM2LjEyNSAyNyIvPjxwb2x5Z29uIGZpbGw9IiNGODlEMzUiIHBvaW50cz0iMTYuMzEzIDk2LjE4OCAuNTYzIDE0MS43NSAzOS45MzggMTM5LjUgNjUuMjUgMTM5LjUgNjUuMjUgMTE5LjgxMyA2NC4xMjUgNzkuMzEzIDU4LjUgODMuODEzIi8+PHBvbHlnb24gZmlsbD0iI0Q4N0MzMCIgcG9pbnRzPSI0Ni4xMjUgMTAxLjI1IDkyLjI1IDEwMi4zNzUgODcuMTg4IDEyNiA2NS4yNSAxMjAuMzc1Ii8+PHBvbHlnb24gZmlsbD0iI0VBOEQzQSIgcG9pbnRzPSI0Ni4xMjUgMTAxLjgxMyA2NS4yNSAxMTkuODEzIDY1LjI1IDEzNy44MTMiLz48cG9seWdvbiBmaWxsPSIjRjg5RDM1IiBwb2ludHM9IjY1LjI1IDEyMC4zNzUgODcuNzUgMTI2IDk1LjA2MyAxNTAuMTg4IDkwIDE1MyA2NS4yNSAxMzguMzc1Ii8+PHBvbHlnb24gZmlsbD0iI0VCOEYzNSIgcG9pbnRzPSI2NS4yNSAxMzguMzc1IDYwLjc1IDE3My4yNSA5MC41NjMgMTUyLjQzOCIvPjxwb2x5Z29uIGZpbGw9IiNFQThFM0EiIHBvaW50cz0iOTIuMjUgMTAyLjM3NSA5NS4wNjMgMTUwLjE4OCA4Ni42MjUgMTI1LjcxOSIvPjxwb2x5Z29uIGZpbGw9IiNEODdDMzAiIHBvaW50cz0iMzkuMzc1IDEzOC45MzggNjUuMjUgMTM4LjM3NSA2MC43NSAxNzMuMjUiLz48cG9seWdvbiBmaWxsPSIjRUI4RjM1IiBwb2ludHM9IjEyLjkzOCAxODguNDM4IDYwLjc1IDE3My4yNSAzOS4zNzUgMTM4LjkzOCAuNTYzIDE0MS43NSIvPjxwb2x5Z29uIGZpbGw9IiNFODgyMUUiIHBvaW50cz0iODguODc1IDU4LjUgNjQuNjg4IDc4Ljc1IDQ2LjEyNSAxMDEuMjUgOTIuMjUgMTAyLjkzOCIvPjxwb2x5Z29uIGZpbGw9IiNERkNFQzMiIHBvaW50cz0iNjAuNzUgMTczLjI1IDkwLjU2MyAxNTIuNDM4IDg4LjMxMyAxNzAuNDM4IDg4LjMxMyAxODAuNTYzIDY4LjA2MyAxNzYuNjI1Ii8+PHBvbHlnb24gZmlsbD0iI0RGQ0VDMyIgcG9pbnRzPSIxMjEuNSAxNzMuMjUgMTUwLjc1IDE1Mi40MzggMTQ4LjUgMTcwLjQzOCAxNDguNSAxODAuNTYzIDEyOC4yNSAxNzYuNjI1IiB0cmFuc2Zvcm09Im1hdHJpeCgtMSAwIDAgMSAyNzIuMjUgMCkiLz48cG9seWdvbiBmaWxsPSIjMzkzOTM5IiBwb2ludHM9IjcwLjMxMyAxMTIuNSA2NC4xMjUgMTI1LjQzOCA4Ni4wNjMgMTE5LjgxMyIgdHJhbnNmb3JtPSJtYXRyaXgoLTEgMCAwIDEgMTUwLjE4OCAwKSIvPjxwb2x5Z29uIGZpbGw9IiNFODhGMzUiIHBvaW50cz0iMTIuMzc1IC41NjMgODguODc1IDU4LjUgNzUuOTM4IDI3Ii8+PHBhdGggZmlsbD0iIzhFNUEzMCIgZD0iTTEyLjM3NTAwMDIsMC41NjI1MDAwMDggTDIuMjUwMDAwMDMsMzEuNTAwMDAwNSBMNy44NzUwMDAxMiw2NS4yNTAwMDEgTDMuOTM3NTAwMDYsNjcuNTAwMDAxIEw5LjU2MjUwMDE0LDcyLjU2MjUgTDUuMDYyNTAwMDgsNzYuNTAwMDAxMSBMMTEuMjUsODIuMTI1MDAxMiBMNy4zMTI1MDAxMSw4NS41MDAwMDEzIEwxNi4zMTI1MDAyLDk2Ljc1MDAwMTQgTDU4LjUwMDAwMDksODMuODEyNTAxMiBDNzkuMTI1MDAxMiw2Ny4zMTI1MDA0IDg5LjI1MDAwMTMsNTguODc1MDAwMyA4OC44NzUwMDEzLDU4LjUwMDAwMDkgQzg4LjUwMDAwMTMsNTguMTI1MDAwOSA2My4wMDAwMDA5LDM4LjgxMjUwMDYgMTIuMzc1MDAwMiwwLjU2MjUwMDAwOCBaIi8+PGcgdHJhbnNmb3JtPSJtYXRyaXgoLTEgMCAwIDEgMjExLjUgMCkiPjxwb2x5Z29uIGZpbGw9IiNGODlEMzUiIHBvaW50cz0iMTYuMzEzIDk2LjE4OCAuNTYzIDE0MS43NSAzOS45MzggMTM5LjUgNjUuMjUgMTM5LjUgNjUuMjUgMTE5LjgxMyA2NC4xMjUgNzkuMzEzIDU4LjUgODMuODEzIi8+PHBvbHlnb24gZmlsbD0iI0Q4N0MzMCIgcG9pbnRzPSI0Ni4xMjUgMTAxLjI1IDkyLjI1IDEwMi4zNzUgODcuMTg4IDEyNiA2NS4yNSAxMjAuMzc1Ii8+PHBvbHlnb24gZmlsbD0iI0VBOEQzQSIgcG9pbnRzPSI0Ni4xMjUgMTAxLjgxMyA2NS4yNSAxMTkuODEzIDY1LjI1IDEzNy44MTMiLz48cG9seWdvbiBmaWxsPSIjRjg5RDM1IiBwb2ludHM9IjY1LjI1IDEyMC4zNzUgODcuNzUgMTI2IDk1LjA2MyAxNTAuMTg4IDkwIDE1MyA2NS4yNSAxMzguMzc1Ii8+PHBvbHlnb24gZmlsbD0iI0VCOEYzNSIgcG9pbnRzPSI2NS4yNSAxMzguMzc1IDYwLjc1IDE3My4yNSA5MCAxNTMiLz48cG9seWdvbiBmaWxsPSIjRUE4RTNBIiBwb2ludHM9IjkyLjI1IDEwMi4zNzUgOTUuMDYzIDE1MC4xODggODYuNjI1IDEyNS43MTkiLz48cG9seWdvbiBmaWxsPSIjRDg3QzMwIiBwb2ludHM9IjM5LjM3NSAxMzguOTM4IDY1LjI1IDEzOC4zNzUgNjAuNzUgMTczLjI1Ii8+PHBvbHlnb24gZmlsbD0iI0VCOEYzNSIgcG9pbnRzPSIxMi45MzggMTg4LjQzOCA2MC43NSAxNzMuMjUgMzkuMzc1IDEzOC45MzggLjU2MyAxNDEuNzUiLz48cG9seWdvbiBmaWxsPSIjRTg4MjFFIiBwb2ludHM9Ijg4Ljg3NSA1OC41IDY0LjY4OCA3OC43NSA0Ni4xMjUgMTAxLjI1IDkyLjI1IDEwMi45MzgiLz48cG9seWdvbiBmaWxsPSIjMzkzOTM5IiBwb2ludHM9IjcwLjMxMyAxMTIuNSA2NC4xMjUgMTI1LjQzOCA4Ni4wNjMgMTE5LjgxMyIgdHJhbnNmb3JtPSJtYXRyaXgoLTEgMCAwIDEgMTUwLjE4OCAwKSIvPjxwb2x5Z29uIGZpbGw9IiNFODhGMzUiIHBvaW50cz0iMTIuMzc1IC41NjMgODguODc1IDU4LjUgNzUuOTM4IDI3Ii8+PHBhdGggZmlsbD0iIzhFNUEzMCIgZD0iTTEyLjM3NTAwMDIsMC41NjI1MDAwMDggTDIuMjUwMDAwMDMsMzEuNTAwMDAwNSBMNy44NzUwMDAxMiw2NS4yNTAwMDEgTDMuOTM3NTAwMDYsNjcuNTAwMDAxIEw5LjU2MjUwMDE0LDcyLjU2MjUgTDUuMDYyNTAwMDgsNzYuNTAwMDAxMSBMMTEuMjUsODIuMTI1MDAxMiBMNy4zMTI1MDAxMSw4NS41MDAwMDEzIEwxNi4zMTI1MDAyLDk2Ljc1MDAwMTQgTDU4LjUwMDAwMDksODMuODEyNTAxMiBDNzkuMTI1MDAxMiw2Ny4zMTI1MDA0IDg5LjI1MDAwMTMsNTguODc1MDAwMyA4OC44NzUwMDEzLDU4LjUwMDAwMDkgQzg4LjUwMDAwMTMsNTguMTI1MDAwOSA2My4wMDAwMDA5LDM4LjgxMjUwMDYgMTIuMzc1MDAwMiwwLjU2MjUwMDAwOCBaIi8+PC9nPjwvZz48L3N2Zz4=');
+            width: 16px;
+            height: 16px;
+            background-size: contain;
+            cursor: pointer;
+            display: inline-block;
+            margin-left: 5px;
+        }
+    </style>
+    <body style="font-family: system-ui;" class="markdown-body">
+        <h1>🛡️ Omnid - RPC Proxy</h1>
+        <p>Omnid's RPC is an <a href="https://github.com/anudit/omnid-proxy-rpc" target='_blank'>open-source</a>, self-hostable RPC Proxy that scans the transactions before sending them to the chain for malicious/phishing activity using <a href="https://omnid.space" target="_blank">Omnid</a>, static analysis, transaction simulation & various vulnerability detectors. If malicious activity is detected, the transaction is rejected before it ever sees the chain.</p>
+        <p>TOR Address: <code>omnid2kq4qppsp2a5hgeqok6ahkfo23tdtoe7km4uier4o43taxct5ad.onion</code></p>
+        <a href="https://docs.theconvo.space/docs/ConvoX/omnid-rpc" target="_blank">Docs</a>
+        <br/>
+        <h2 id="networks">Supported Networks</h2>
+        <table width="100%">
+            <tr>
+                <th colspan="4">Ethereum</th>
+            </tr>
+            <tr>
+                <th>Network</th>
+                <th>RPC</th>
+                <th>ChainId</th>
+                <th>Head</th>
+            </tr>
+            <tr>
+                <td>Mainnet</td>
+                <td><code><span class="hn"></span>/mainnet</code></td>
+                <td>1 <code>0x1</code></td>
+                <td><span id="mainnet"></span></td>
+            </tr>
+            <tr>
+                <td>Goerli Testnet </td>
+                <td><code><span class="hn"></span>/goerli</code></td>
+                <td>5 <code>0x5</code></td>
+                <td><span id="goerli"></span></td>
+            </tr>
+            <tr>
+                <td>Sepolia Testnet</td>
+                <td><code><span class="hn"></span>/sepolia</code> <div onclick="addToMM('sepolia')" class="mm" title="Add Chain to MetaMask"></div> </td>
+                <td>11155111 <code>0xAA36A7</code></td>
+                <td><span id="sepolia"></span></td>
+            </tr>
+            <tr>
+                <td>⚠️ Rinkeby Testnet (<a href="https://blog.ethereum.org/2022/06/21/testnet-deprecation/" target="_blank">DEPRECATED</a>)</td>
+                <td><code><span class="hn"></span>/rinkeby</code></td>
+                <td>4 <code>0x4</code></td>
+                <td><span id="rinkeby"></span></td>
+            </tr>
+            <tr>
+                <td>⚠️ Ropsten Testnet (<a href="https://blog.ethereum.org/2022/06/21/testnet-deprecation/" target="_blank">DEPRECATED</a>)</td>
+                <td><code><span class="hn"></span>/ropsten</code></td>
+                <td>3 <code>0x3</code></td>
+                <td><span id="ropsten"></span></td>
+            </tr>
+            <tr>
+                <td>⚠️ Kovan Testnet (<a href="https://blog.ethereum.org/2022/06/21/testnet-deprecation/" target="_blank">DEPRECATED</a>)</td>
+                <td><code><span class="hn"></span>/kovan</code></td>
+                <td>42 <code>0x2A</code></td>
+                <td><span id="kovan"></span></td>
+            </tr>
+            <tr>
+              <th colspan="4">Flashbots</th>
+            </tr>
+            <tr>
+                <th>Network</th>
+                <th>RPC</th>
+                <th>ChainId</th>
+                <th>Head</th>
+            </tr>
+            <tr>
+                <td>Ethereum Mainnet</td>
+                <td><code><span class="hn"></span>/mainnet-flashbots</code></td>
+                <td>1 <code>0x1</code></td>
+                <td><span id="mainnet-flashbots"></span></td>
+            </tr>
+            <tr>
+                <td>Ethereum Mainnet (Fast Mode)</td>
+                <td><code><span class="hn"></span>/mainnet-flashbots-fast</code></td>
+                <td>1 <code>0x1</code></td>
+                <td><span id="mainnet-flashbots-fast"></span></td>
+            </tr>
+            <tr>
+                <td>Ethereum Goerli</td>
+                <td><code><span class="hn"></span>/goerli-flashbots</code></td>
+                <td>5 <code>0x5</code></td>
+                <td><span id="goerli-flashbots"></span></td>
+            </tr>
+            <tr>
+              <th colspan="4">Polygon</th>
+            </tr>
+            <tr>
+                <th>Network</th>
+                <th>RPC</th>
+                <th>ChainId</th>
+                <th>Head</th>
+            </tr>
+            <tr>
+                <td>Mainnet</td>
+                <td><code><span class="hn"></span>/polygon</code> <div onclick="addToMM('polygon')" class="mm" title="Add Chain to MetaMask"></div></td>
+                <td>137 <code>0x89</code></td>
+                <td><span id="polygon"></span></td>
+            </tr>
+            <tr>
+                <td>Mumbai Testnet</td>
+                <td><code><span class="hn"></span>/polygon-testnet</code> <div onclick="addToMM('polygon-testnet')" class="mm" title="Add Chain to MetaMask"></div></td>
+                <td>80001 <code>0x13881</code></td>
+                <td><span id="polygon-testnet"></span></td>
+            </tr>
+            <tr>
+                <td>zkEVM Testnet</td>
+                <td><code><span class="hn"></span>/polygon-zkevm</code> <div onclick="addToMM('polygon-zkevm')" class="mm" title="Add Chain to MetaMask"></div></td>
+                <td>1402 <code>0x57A</code></td>
+                <td><span id="polygon-zkevm"></span></td>
+            </tr>
+            <tr>
+              <th colspan="4">Optimism</th>
+            </tr>
+            <tr>
+                <th>Network</th>
+                <th>RPC</th>
+                <th>ChainId</th>
+                <th>Head</th>
+            </tr>
+            <tr>
+                <td>Mainnet</td>
+                <td><code><span class="hn"></span>/optimism</code> <div onclick="addToMM('optimism')" class="mm" title="Add Chain to MetaMask"></div></td>
+                <td>10 <code>0xA</code></td>
+                <td><span id="optimism"></span></td>
+            </tr>
+            <tr>
+                <td>Goerli Testnet</td>
+                <td><code><span class="hn"></span>/optimism-testnet</code> <div onclick="addToMM('optimism-testnet')" class="mm" title="Add Chain to MetaMask"></div></td>
+                <td>420 <code>0x1A4</code></td>
+                <td><span id="optimism-testnet"></span></td>
+            </tr>
+            <tr>
+                <td>Bedrock Testnet</td>
+                <td><code><span class="hn"></span>/optimism-bedrock</code> <div onclick="addToMM('optimism-bedrock')" class="mm" title="Add Chain to MetaMask"></div></td>
+                <td>28528 <code>0x6F70</code></td>
+                <td><span id="optimism-bedrock"></span></td>
+            </tr>
+            <tr>
+              <th colspan="4">Arbitrum</th>
+            </tr>
+            <tr>
+                <th>Network</th>
+                <th>RPC</th>
+                <th>ChainId</th>
+                <th>Head</th>
+            </tr>
+            <tr>
+                <td>Mainnet (Arbitrum One)</td>
+                <td><code><span class="hn"></span>/arbitrum</code> <div onclick="addToMM('arbitrum')" class="mm" title="Add Chain to MetaMask"></div></td>
+                <td>42161 <code>0xA4B1</code></td>
+                <td><span id="arbitrum"></span></td>
+            </tr>
+            <tr>
+                <td>Mainnet (Arbitrum Nova)</td>
+                <td><code><span class="hn"></span>/arbitrum-nova</code> <div onclick="addToMM('arbitrum-nova')" class="mm" title="Add Chain to MetaMask"></div></td>
+                <td>42170 <code>0xA4BA</code></td>
+                <td><span id="arbitrum-nova"></span></td>
+            </tr>
+            <tr>
+                <td>Nitro Goerli Rollup Testnet</td>
+                <td><code><span class="hn"></span>/arbitrum-testnet</code> <div onclick="addToMM('arbitrum-testnet')" class="mm" title="Add Chain to MetaMask"></div></td>
+                <td>421613 <code>0x66EED</code></td>
+                <td><span id="arbitrum-testnet"></span></td>
+            </tr>
+            <tr>
+                <th colspan="4">Advanced</th>
+                </tr>
+                <tr>
+                    <th colspan="1">Network</th>
+                    <th colspan="1">RPC</th>
+                    <th colspan="2">Description</th>
+                </tr>
+                <tr>
+                    <td colspan="1">manual</td>
+                    <td colspan="1"><code><span class="hn"></span>/manual?rpcUrl=https://api.securerpc.com/v1</code></td>
+                    <td colspan="2">Use a custom RPC Url with all the protections.</td>
+                </tr>
+        </table>
+
+        <h2 id="lifejackets">🦺 LifeJackets</h2>
+        <p>LifeJackets are customised security layers that can help setup additional layers of protection.</p>
+        <table width="100%">
+            <tr>
+                <th colspan="4">Query Params</th>
+            </tr>
+            <tr>
+                <th>Param</th>
+                <th>Description</th>
+                <th>Example</th>
+            </tr>
+            <tr>
+                <td><code>blockUnverifiedContracts</code></td>
+                <td>Block Transactions to Un-Verified Contracts. Powered by <a href="https://sourcify.dev/" target="_blank">Sourcify.dev</a>. Suported values: <code>true</code>, <code>false</code>.</td>
+                <td><code><span class="hn"></span>/ethereum?blockUnverifiedContracts=true</code></td>
+            </tr>
+            <tr>
+                <td><code>enableScanners</code></td>
+                <td>Run verified contracts through Slither for vulnerability analysis. Suported values: <code>slither</code>.</td>
+                <td><code><span class="hn"></span>/polygon-testnet?enableScanners=slither</code></td>
+            </tr>
+            <tr>
+                <td><code>blockRecentDnsUpdates</code></td>
+                <td>Checks the DNS records for a domain to see when it was last updated (<a href="https://www.ripe.net/publications/docs/ripe-203" target="_blank">Only RFC 1912 Compliant Domains</a>). Blocks recently modified domains to prevent <a href="https://cointelegraph.com/news/breaking-curve-finance-team-warns-users-to-avoid-using-site-until-further-notice" target="_blank">DNS poisioning atttacks</a>. Supported Values: <code>number</code> set in Days.</td>
+                <td><code><span class="hn"></span>/ethereum?blockRecentDnsUpdates=2</code></td>
+            </tr>
+            <tr>
+                <td><code>useTor</code></td>
+                <td>Broadcast Transactions over a Tor Proxy. Supported Values: <code>true</code>, <code>false</code>.</td>
+                <td><code><span class="hn"></span>/ethereum?useTor=true</code></td>
+            </tr>
+        </table>
+
+        <h2 id="api">⚙️ API</h2>
+        <p>Integrate internal tooling of the RPC in your own applications.</p>
+        <table width="100%">
+            <tr>
+                <th>Route</th>
+                <th>Description</th>
+                <th>Example</th>
+            </tr>
+            <tr>
+                <td><code>/blacklist/&lt;domain&gt;</domain></code></td>
+                <td>Check if a domain has been blacklisted.</td>
+                <td><a href="https://rpc.omnid.space/blacklist/metamas.io" target="_blank"><code><span class="hn"></span>/blacklist/metamas.io</code></a></td>
+            </tr>
+            <tr>
+                <td><code>/blacklist</code></td>
+                <td>Get stats on blacklisted domains.</td>
+                <td><a href="https://rpc.omnid.space/blacklist" target="_blank"><code><span class="hn"></span>/blacklist</code></a></td>
+            </tr>
+            <tr>
+                <td><code>/whitelist</code></td>
+                <td>Get a list of whitelisted domains.</td>
+                <td><a href="https://rpc.omnid.space/whitelist" target="_blank"><code><span class="hn"></span>/whitelist</code></a></td>
+            </tr>
+            <tr>
+                <td><code>/malicious/&lt;ethAddress&gt;</code></td>
+                <td>Check an Ethereum Address for Malicious Activity.</td>
+                <td><a href="https://rpc.omnid.space/malicious/0x627a22ff70cb84e74c9c70e2d5b0b75af5a1dcb9" target="_blank"><code><span class="hn"></span>/malicious/0x627a...1dcb9</code></a></td>
+            </tr>
+            <tr>
+                <td><code>/tokendeets/&lt;contractAddress&gt;</code></td>
+                <td>Get Token Metadata.</td>
+                <td><a href="https://rpc.omnid.space/tokendeets/0x2791bca1f2de4661ed88a30c99a7a9449aa84174" target="_blank"><code><span class="hn"></span>/tokendeets/0x0x2791...4174</code></a></td>
+            </tr>
+        </table>
+    </body>
+    <script>
+        const networks = {
+            "mainnet": {
+                "rpc": `${window.location.origin}/mainnet`,
+                "chainId": "0x1",
+                "chainName": "Omnid Ethereum Mainnet",
+                "blockExplorer": "https://etherscan.io"
+            },
+            "mainnet-flashbots": {
+                "rpc": `${window.location.origin}/mainnet-flashbots`,
+                "chainId": "0x1",
+                "chainName": "Omnid Flashbots Mainnet",
+                "blockExplorer": "https://etherscan.io"
+            },
+            "mainnet-flashbots-fast": {
+                "rpc": `${window.location.origin}/mainnet-flashbots-fast`,
+                "chainId": "0x1",
+                "chainName": "Omnid Flashbots Mainnet Fast",
+                "blockExplorer": "https://etherscan.io"
+            },
+            "ropsten": {
+                "rpc": `${window.location.origin}/ropsten`,
+                "chainId": "0x3",
+                "chainName": "Omnid Ropsten Testnet",
+                "blockExplorer": "https://ropsten.etherscan.io"
+            },
+            "kovan": {
+                "rpc": `${window.location.origin}/kovan`,
+                "chainId": "0x2A",
+                "chainName": "Omnid Kovan Testnet",
+                "blockExplorer": "https://kovan.etherscan.io"
+            },
+            "rinkeby": {
+                "rpc": `${window.location.origin}/rinkeby`,
+                "chainId": "0x4",
+                "chainName": "Omnid Rinkeby Testnet",
+                "blockExplorer": "https://rinkeby.etherscan.io"
+            },
+            "goerli": {
+                "rpc": `${window.location.origin}/goerli`,
+                "chainId": "0x5",
+                "chainName": "Omnid Goerli Testnet",
+                "blockExplorer": "https://goerli.etherscan.io"
+            },
+            "sepolia": {
+                "rpc": `${window.location.origin}/sepolia`,
+                "chainId": "0xAA36A7",
+                "chainName": "Omnid Sepolia Testnet",
+                "blockExplorer": "https://sepolia.etherscan.io"
+            },
+            "goerli-flashbots": {
+                "rpc": `${window.location.origin}/goerli-flashbots`,
+                "chainId": "0x5",
+                "chainName": "Omnid Flashbots Goerli",
+                "blockExplorer": "https://goerli.etherscan.io"
+            },
+            "polygon": {
+                "rpc": `${window.location.origin}/polygon`,
+                "chainId": "0x89",
+                "chainName": "Omnid Polygon",
+                "blockExplorer": "http://polygonscan.com"
+            },
+            "polygon-testnet": {
+                "rpc": `${window.location.origin}/polygon-testnet`,
+                "chainId": "0x13881",
+                "chainName": "Omnid Polygon Testnet",
+                "blockExplorer": "http://mumbai.polygonscan.com"
+            },
+            "polygon-zkevm": {
+                "rpc": `${window.location.origin}/polygon-zkevm`,
+                "chainId": "0x57A",
+                "chainName": "Omnid Polygon zkEVM Testnet",
+                "blockExplorer": "https://public.zkevm-test.net:8443"
+            },
+            "optimism": {
+                "rpc": `${window.location.origin}/optimism`,
+                "chainId": "0xA",
+                "chainName": "Omnid Optimism",
+                "blockExplorer": "https://optimistic.etherscan.io"
+            },
+            "optimism-testnet": {
+                "rpc": `${window.location.origin}/optimism-testnet`,
+                "chainId": "0x1A4",
+                "chainName": "Omnid Optimism Testnet",
+                "blockExplorer": "https://blockscout.com/optimism/goerli"
+            },
+            "optimism-bedrock": {
+                "rpc": `${window.location.origin}/optimism-bedrock`,
+                "chainId": `0x${(28528).toString(16)}`,
+                "chainName": "Omnid Optimism Bedrock Testnet",
+                "blockExplorer": "#"
+            },
+            "arbitrum": {
+                "rpc": `${window.location.origin}/arbitrum`,
+                "chainId": "0xA4B1",
+                "chainName": "Omnid Arbitrum",
+                "blockExplorer": "https://arbiscan.io"
+            },
+            "arbitrum-nova": {
+                "rpc": `${window.location.origin}/arbitrum-nova`,
+                "chainId": "0xA4BA",
+                "chainName": "Omnid Arbitrum Nova",
+                "blockExplorer": "https://nova-explorer.arbitrum.io"
+            },
+            'arbitrum-testnet': {
+                rpc: `${window.location.origin}/arbitrum-testnet`,
+                chainId: '0x66EED',
+                chainName: 'Omnid Arbitrum Testnet',
+                blockExplorer: 'https://goerli-rollup-explorer.arbitrum.io'
+            }
+        }
+        Object.freeze(networks);
+
+        const sleep = ms => new Promise(r => setTimeout(r, ms));
+
+        async function getLatestBlockAndUpdate(net){
+            document.getElementById(net).innerHTML = `🟡&nbsp;<code>...</code>`
+            let resp = await fetch(networks[net].rpc, {
+                method: "POST",
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    "method":"eth_blockNumber",
+                    "params":[],
+                    "id":parseInt(Math.random() * 100),
+                    "jsonrpc":"2.0"
+                })
+            });
+            if (resp.ok){
+                let json = await resp.json();
+                document.getElementById(net).innerHTML = `🟢&nbsp;<code>${parseInt(json.result).toLocaleString()}</code>`
+            }
+            else {
+                let json = await resp.json();
+                document.getElementById(net).innerHTML = `🔴`
+            }
+        }
+
+        window.addEventListener('load', async () => {
+            Array.from(document.getElementsByClassName('hn')).forEach(e=>{
+                e.innerHTML = window.location.origin;
+            })
+
+            for (let index = 0; index < Object.keys(networks).length; index++) {
+                const net = Object.keys(networks)[index];
+                console.log('Setting up', net);
+                getLatestBlockAndUpdate(net)
+                await sleep(1000);
+                setInterval(() =>{
+                    getLatestBlockAndUpdate(net);
+                }, 20*1000);
+            }
+        });
+
+
+        const addToMM = async (network) => {
+            try {
+                await ethereum.request({
+                    method: 'wallet_switchEthereumChain',
+                    params: [{ chainId: networks[network].chainId }],
+                });
+            } catch (switchError) {
+                if (switchError.code === 4902) {
+                    try {
+                        await ethereum.request({
+                            method: 'wallet_addEthereumChain',
+                            params: [
+                                {
+                                    chainId: networks[network].chainId,
+                                    chainName: networks[network].chainName,
+                                    rpcUrls: [networks[network].rpc],
+                                    blockExplorerUrls: [networks[network].blockExplorer]
+                                },
+                            ],
+                        });
+                    } catch (addError) {
+                        alert(addError?.message);
+                    }
+                }
+                else {
+                    alert(switchError?.message);
+                }
+            }
+        }
+    </script>
+</html>
