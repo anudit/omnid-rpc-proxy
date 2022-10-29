@@ -168,6 +168,48 @@
                 <td><span id="polygon-zkevm"></span></td>
             </tr>
             <tr>
+                <th colspan="4">Binance Smart Chain (BSC)</th>
+            </tr>
+            <tr>
+                <th>Network</th>
+                <th>RPC</th>
+                <th>ChainId</th>
+                <th>Head</th>
+            </tr>
+            <tr>
+                <td>Mainnet</td>
+                <td><code><span class="hn"></span>/bsc</code> <div onclick="addToMM('bsc')" class="mm" title="Add Chain to MetaMask"></div></td>
+                <td>56 <code>0x38</code></td>
+                <td><span id="bsc"></span></td>
+            </tr>
+            <tr>
+                <td>Testnet</td>
+                <td><code><span class="hn"></span>/bsc-testnet</code> <div onclick="addToMM('bsc-testnet')" class="mm" title="Add Chain to MetaMask"></div></td>
+                <td>97 <code>0x61</code></td>
+                <td><span id="bsc-testnet"></span></td>
+            </tr>
+            <tr>
+                <th colspan="4">Fantom</th>
+            </tr>
+            <tr>
+                <th>Network</th>
+                <th>RPC</th>
+                <th>ChainId</th>
+                <th>Head</th>
+            </tr>
+            <tr>
+                <td>Mainnet</td>
+                <td><code><span class="hn"></span>/fantom</code> <div onclick="addToMM('fantom')" class="mm" title="Add Chain to MetaMask"></div></td>
+                <td>250 <code>0xFA</code></td>
+                <td><span id="fantom"></span></td>
+            </tr>
+            <tr>
+                <td>Testnet</td>
+                <td><code><span class="hn"></span>/fantom-testnet</code> <div onclick="addToMM('fantom-testnet')" class="mm" title="Add Chain to MetaMask"></div></td>
+                <td>4002 <code>0xFA2</code></td>
+                <td><span id="fantom-testnet"></span></td>
+            </tr>
+            <tr>
               <th colspan="4">Optimism</th>
             </tr>
             <tr>
@@ -377,6 +419,30 @@
                 "chainId": "0x57A",
                 "chainName": "Omnid Polygon zkEVM Testnet",
                 "blockExplorer": "https://public.zkevm-test.net:8443"
+            },
+            "bsc": {
+                "rpc": `${window.location.origin}/bsc`,
+                "chainId": "0x38",
+                "chainName": "Omnid BSC",
+                "blockExplorer": "https://bscscan.com"
+            },
+            "bsc-testnet": {
+                "rpc": `${window.location.origin}/bsc-testnet`,
+                "chainId": "0x61",
+                "chainName": "Omnid BSC Testnet",
+                "blockExplorer": "https://testnet.bscscan.com"
+            },
+            "fantom": {
+                "rpc": `${window.location.origin}/fantom`,
+                "chainId": "0xFA",
+                "chainName": "Omnid Fantom",
+                "blockExplorer": "https://ftmscan.com"
+            },
+            "fantom-testnet": {
+                "rpc": `${window.location.origin}/fantom-testnet`,
+                "chainId": "0xFA2",
+                "chainName": "Omnid Fantom Testnet",
+                "blockExplorer": "https://testnet.ftmscan.com"
             },
             "optimism": {
                 "rpc": `${window.location.origin}/optimism`,

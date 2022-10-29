@@ -75,7 +75,11 @@ const netIdToEnv =  new Map<supportedNetworkIds, supportedEnvVars>([
     ['optimism-bedrock', 'OPTIMISM_BEDROCK_RPC_URL'],
     ['arbitrum', 'ARBITRUM_RPC_URL'],
     ['arbitrum-nova', 'ARBITRUM_NOVA_RPC_URL'],
-    ['arbitrum-testnet', 'ARBITRUM_TESTNET_RPC_URL']
+    ['arbitrum-testnet', 'ARBITRUM_TESTNET_RPC_URL'],
+    ['bsc', 'BSC_RPC_URL'],
+    ['bsc-testnet', 'BSC_TESTNET_RPC_URL'],
+    ['fantom', 'FANTOM_RPC_URL'],
+    ['fantom-testnet', 'FANTOM_TESTNET_RPC_URL'],
 ]);
 
 const networkToRpc = (netId: supportedNetworkIds): string => {
