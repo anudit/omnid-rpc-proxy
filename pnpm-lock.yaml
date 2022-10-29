@@ -7,8 +7,8 @@ specifiers:
   '@fastify/cors': ^8.1.1
   '@fastify/helmet': ^10.0.2
   '@fastify/static': ^6.5.0
-  '@theconvospace/sdk': ^0.6.2
-  '@types/node': ^18.11.5
+  '@theconvospace/sdk': ^0.6.3
+  '@types/node': ^18.11.7
   cross-fetch: ^3.1.5
   dotenv: ^16.0.3
   eth-phishing-detect: ^1.2.0
@@ -28,7 +28,7 @@ dependencies:
   '@fastify/cors': 8.1.1
   '@fastify/helmet': 10.0.2
   '@fastify/static': 6.5.0
-  '@theconvospace/sdk': 0.6.2
+  '@theconvospace/sdk': 0.6.3
   cross-fetch: 3.1.5
   dotenv: 16.0.3
   eth-phishing-detect: 1.2.0
@@ -39,15 +39,15 @@ dependencies:
   socks-proxy-agent: 7.0.0
 
 devDependencies:
-  '@types/node': 18.11.5
+  '@types/node': 18.11.7
   npm-run-all: 4.1.5
   tsup: 6.3.0_typescript@4.8.4
   typescript: 4.8.4
 
 packages:
 
-  /@babel/runtime/7.19.4:
-    resolution: {integrity: sha512-EXpLCrk55f+cYqmHsSR+yD/0gAIMxxA9QK9lnQWzhMCvt+YmoBN7Zx94s++Kv0+unHk39vxNO8t+CMA2WSS3wA==}
+  /@babel/runtime/7.20.0:
+    resolution: {integrity: sha512-NDYdls71fTXoU8TZHfbBWg7DiZfNzClcKui/+kyi6ppD2L1qnWW3VV6CjtaBXSUGGhiTWJ6ereOIkUvenif66Q==}
     engines: {node: '>=6.9.0'}
     dependencies:
       regenerator-runtime: 0.13.10
@@ -561,7 +561,7 @@ packages:
     resolution: {integrity: sha512-RyaHMR2jGmaesnYP045VLeBGfR/gAW3cvZHzMFGg7bkO+WOYOYp1nEllf0/la4U4qsYGKCsO9eEevR5fhHiVHg==}
     engines: {node: '>=12.20.0'}
     dependencies:
-      '@babel/runtime': 7.19.4
+      '@babel/runtime': 7.20.0
       '@noble/ed25519': 1.7.1
       '@noble/hashes': 1.1.3
       '@noble/secp256k1': 1.7.0
@@ -609,8 +609,8 @@ packages:
     resolution: {integrity: sha512-WfqfX/eXGiAd3RJe4VU2snh/ZPwtSjLG4ynQ/vYzvghTh7dHFcI1wl+nrkWG6lGhukOxOsUHfv8dUXr58D0ayg==}
     dev: false
 
-  /@theconvospace/sdk/0.6.2:
-    resolution: {integrity: sha512-N+rvX38eyoHEaAyWphZjUCWvG9xTNNLXcYBUph0Ihmqk7YIMi7t6+hnV4SP1l734uZkZK4TSXpPujkyVHUtU1Q==}
+  /@theconvospace/sdk/0.6.3:
+    resolution: {integrity: sha512-+JNTus0cX3ayi2T4YuznqvuXYLMwnfjfJNoACEXnfVayShLEVRgePzoWIBeP6/uL+ADZyzyqTcVaDR/IX5Nshw==}
     engines: {node: '>=14.17.0'}
     dependencies:
       '@ethersproject/abi': 5.7.0
@@ -628,38 +628,38 @@ packages:
   /@types/bn.js/5.1.1:
     resolution: {integrity: sha512-qNrYbZqMx0uJAfKnKclPh+dTwK33KfLHYqtyODwd5HnXOjnkhc4qgn3BrK6RWyGZm5+sIFE7Q7Vz6QQtJB7w7g==}
     dependencies:
-      '@types/node': 18.11.5
+      '@types/node': 18.11.7
     dev: false
 
   /@types/connect/3.4.35:
     resolution: {integrity: sha512-cdeYyv4KWoEgpBISTxWvqYsVy444DOqehiF3fM3ne10AmJ62RSyNkUnxMJXHQWRQQX2eR94m5y1IZyDwBjV9FQ==}
     dependencies:
-      '@types/node': 18.11.5
+      '@types/node': 18.11.7
     dev: false
 
   /@types/node/12.20.55:
     resolution: {integrity: sha512-J8xLz7q2OFulZ2cyGTLE1TbbZcjpno7FaN6zdJNrgAdrJ+DZzh/uFR6YrTb4C+nXakvud8Q4+rbhoIWlYQbUFQ==}
     dev: false
 
-  /@types/node/18.11.5:
-    resolution: {integrity: sha512-3JRwhbjI+cHLAkUorhf8RnqUbFXajvzX4q6fMn5JwkgtuwfYtRQYI3u4V92vI6NJuTsbBQWWh3RZjFsuevyMGQ==}
+  /@types/node/18.11.7:
+    resolution: {integrity: sha512-LhFTglglr63mNXUSRYD8A+ZAIu5sFqNJ4Y2fPuY7UlrySJH87rRRlhtVmMHplmfk5WkoJGmDjE9oiTfyX94CpQ==}
 
   /@types/pbkdf2/3.1.0:
     resolution: {integrity: sha512-Cf63Rv7jCQ0LaL8tNXmEyqTHuIJxRdlS5vMh1mj5voN4+QFhVZnlZruezqpWYDiJ8UTzhP0VmeLXCmBk66YrMQ==}
     dependencies:
-      '@types/node': 18.11.5
+      '@types/node': 18.11.7
     dev: false
 
   /@types/secp256k1/4.0.3:
     resolution: {integrity: sha512-Da66lEIFeIz9ltsdMZcpQvmrmmoqrfju8pm1BH8WbYjZSwUgCwXLb9C+9XYogwBITnbsSaMdVPb2ekf7TV+03w==}
     dependencies:
-      '@types/node': 18.11.5
+      '@types/node': 18.11.7
     dev: false
 
   /@types/ws/7.4.7:
     resolution: {integrity: sha512-JQbbmxZTZehdc2iszGKs5oC3NFnjeay7mtAWrdt7qNtAVK0g19muApzAy4bm9byz79xa2ZnO/BOBC2R8RC5Lww==}
     dependencies:
-      '@types/node': 18.11.5
+      '@types/node': 18.11.7
     dev: false
 
   /JSONStream/1.3.5:
@@ -2671,7 +2671,7 @@ packages:
   /rpc-websockets/7.5.0:
     resolution: {integrity: sha512-9tIRi1uZGy7YmDjErf1Ax3wtqdSSLIlnmL5OtOzgd5eqPKbsPpwDP5whUDO2LQay3Xp0CcHlcNSGzacNRluBaQ==}
     dependencies:
-      '@babel/runtime': 7.19.4
+      '@babel/runtime': 7.20.0
       eventemitter3: 4.0.7
       uuid: 8.3.2
       ws: 8.10.0_3cxu5zja4e2r5wmvge7mdcljwq
