@@ -195,16 +195,10 @@ export interface MegaHashType extends Map<string, blacklistIndices> {
 export interface DapplistResponse {
     total: number;
     data: {
-        [key: string] : {
-            address: string;
-            msg: {
-                payload: {
-                    url: string;
-                }
-            }
-            votes: number;
-            likes: number;
-        }
+        list: Array<{
+            url: string;
+            numberOfVotes: number;
+        }>
     }
 }
 

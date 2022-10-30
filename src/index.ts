@@ -441,12 +441,12 @@ async function clearWhitelist() {
     console.log('🟢 DefiLlama Whitelist', defillamaList['protocols'].length);
 
 
-    let dapplist: DapplistResponse = await fetch('https://apis.thedapplist.com/api/won-dapps?limit=1000000').then(r=>r.json());
+    let dapplist: DapplistResponse = await fetch('https://api2.thedapplist.com/api/v2/proposals/listed?offset=0&limit=1000000').then(r=>r.json());
     let dapplistCount = 0;
-    Object.values(dapplist.data).forEach((dapp)=>{
+    Object.values(dapplist.data.list).forEach((dapp)=>{
         try {
-            if(dapp.votes >= 5){
-                let url = new URL(dapp.msg.payload.url).hostname.replace('www.',"");
+            if(dapp.numberOfVotes >= 5){
+                let url = new URL(dapp.url).hostname.replace('www.',"");
                 whitelist.add(url);
                 hashTable.delete(url);
                 dapplistCount+=1
