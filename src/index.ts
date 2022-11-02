@@ -360,9 +360,10 @@ server.get('/malicious/:ethAddress', async (req: FastifyRequest, reply: FastifyR
 server.get('/tokendeets/:ethAddress', async (req: FastifyRequest, reply: FastifyReply) => {
     reply.headers({ 'Cache-Control': `max-age=${24*60*60}` })
     const params = req.params as {'ethAddress': string};
+    if (Boolean(params?.ethAddress) === false) reply.send([]);
     let resTokens: Array<MetaData> = [];
     for (let i = 0; i < tokenList.length; i++) {
-        if (tokenList[i]?.address.toLowerCase() === params?.ethAddress.toLowerCase()){
+        if (Boolean(tokenList[i]?.address) && tokenList[i]?.address.toLowerCase() === params?.ethAddress.toLowerCase()){
             resTokens.push(tokenList[i]);
         };
     }
