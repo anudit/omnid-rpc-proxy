@@ -292,7 +292,7 @@
             <tr>
                 <td><code>blockUnverifiedContracts</code></td>
                 <td>Block Transactions to Un-Verified Contracts. Powered by <a href="https://sourcify.dev/" target="_blank">Sourcify.dev</a>. Suported values: <code>true</code>, <code>false</code>.</td>
-                <td><code><span class="hn"></span>/ethereum?blockUnverifiedContracts=true</code></td>
+                <td><code><span class="hn"></span>/mainnet?blockUnverifiedContracts=true</code></td>
             </tr>
             <tr>
                 <td><code>enableScanners</code></td>
@@ -302,12 +302,17 @@
             <tr>
                 <td><code>blockRecentDnsUpdates</code></td>
                 <td>Checks the DNS records for a domain to see when it was last updated (<a href="https://www.ripe.net/publications/docs/ripe-203" target="_blank">Only RFC 1912 Compliant Domains</a>). Blocks recently modified domains to prevent <a href="https://cointelegraph.com/news/breaking-curve-finance-team-warns-users-to-avoid-using-site-until-further-notice" target="_blank">DNS poisioning atttacks</a>. Supported Values: <code>number</code> set in Days.</td>
-                <td><code><span class="hn"></span>/ethereum?blockRecentDnsUpdates=2</code></td>
+                <td><code><span class="hn"></span>/mainnet?blockRecentDnsUpdates=2</code></td>
             </tr>
             <tr>
                 <td><code>useTor</code></td>
                 <td>Broadcast Transactions over a Tor Proxy. Supported Values: <code>true</code>, <code>false</code>.</td>
-                <td><code><span class="hn"></span>/ethereum?useTor=true</code></td>
+                <td><code><span class="hn"></span>/mainnet?useTor=true</code></td>
+            </tr>
+            <tr>
+                <td><code>useGasHawk</code></td>
+                <td>Use <a href="https://gashawk.io/" target="_blank">GasHawk Beta</a>. (Requires <a href="https://gashawk.io/#/metamask" target="_blank">Setup</a>). Only for <code>mainnet</code>. Supported Values: <code>true</code>, <code>false</code>.</td>
+                <td><code><span class="hn"></span>/mainnet?useGasHawk=true</code></td>
             </tr>
         </table>
 

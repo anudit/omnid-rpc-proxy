@@ -56,6 +56,7 @@ export interface IQuerystring {
     enableScanners?: string;
     blockRecentDnsUpdates?: string;
     useTor?: string;
+    useGasHawk?: string;
 }
 
 export interface IRouteParams {

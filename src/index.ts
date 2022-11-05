@@ -151,19 +151,18 @@ async function alchemySimulate(simData: AlchemySimulationReq): Promise<AlchemySi
     }
 }
 
-async function sendToRpc(network: supportedNetworkIds, req: FastifyRequest) {
+async function sendToRpc(network: supportedNetworkIds, req: FastifyRequest, overrideRpcUrl: string = "") {
     let query = req.query as IQuerystring;
     try {
 
-        let rpcUrl = network === 'manual' ? query.rpcUrl : networkToRpc(network);
+        let rpcUrl = network === 'manual' ? (overrideRpcUrl === "" ? query.rpcUrl : overrideRpcUrl) : networkToRpc(network);
         if (rpcUrl !== undefined){
 
             // Proxy the Request without any PII.
             let data = await fetch(rpcUrl, {
                 method: "POST",
                 body: JSON.stringify(req.body),
-                // shut up ts, it works.
-                // @ts-expect-error
+                // @ts-expect-error - shut up ts, it works.
                 agent: query?.useTor === 'true' ? new SocksProxyAgent(proxyUrl) : null,
                 headers: {
                     'Content-Type': 'application/json',
@@ -297,6 +296,11 @@ async function processTxs(network: supportedNetworkIds, req: FastifyRequest) {
                 }
             };
         }
+    }
+
+    // Use Gas Hawk, enable only on mainnet.
+    if (network === 'mainnet' && query?.useGasHawk != undefined && query.useGasHawk === 'true'){
+        return await sendToRpc('manual', req, 'https://beta-be.gashawk.io:3001/proxy/rpc');
     }
 
     // If nothing found, simply submit txn to network.
