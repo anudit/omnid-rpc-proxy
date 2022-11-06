@@ -47,7 +47,15 @@ export interface MetaData {
     "sources": Array<string>,
     "chainId": number,
     "iconUrl": string,
-    coingeckoId: string,
+    coingeckoId?: string,
+}
+
+export interface MetaMaskTokenMetaData {
+    "name": string,
+    "logo": string,
+    "erc20": boolean,
+    "symbol": string,
+    "decimals": number
 }
 
 export interface IQuerystring {

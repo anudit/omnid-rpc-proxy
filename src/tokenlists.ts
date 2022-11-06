@@ -1,5 +1,5 @@
 import fetch from 'cross-fetch';
-import { Dictionary, MetaData } from './types';
+import { Dictionary, MetaData, MetaMaskTokenMetaData } from './types';
 
 async function getTokenLists() {
     console.log('Compiling tokenlists')
@@ -25,7 +25,6 @@ async function getTokenLists() {
             res = res.concat(data.value);
         }
     }
-    console.log('🪙 ', res.length, 'Tokens')
 
     res.push({
         "name": "Matic",
@@ -38,8 +37,25 @@ async function getTokenLists() {
         ],
         "chainId": 137,
         "coingeckoId": "matic-network"
-    })
+    });
 
+    let metamaskData: {[key:string]: MetaMaskTokenMetaData} = await fetch('https://raw.githubusercontent.com/MetaMask/contract-metadata/master/contract-map.json').then(e=>{
+        return e.json();
+    });
+
+    for (const [key, val] of Object.entries(metamaskData)){
+        res.push({
+            "name": val.name,
+            "symbol": val.symbol,
+            "decimals": val.decimals,
+            "address": key,
+            "iconUrl": "https://raw.githubusercontent.com/MetaMask/contract-metadata/master/images/" + val.logo,
+            "sources": ["https://github.com/MetaMask/contract-metadata"],
+            "chainId": 1
+        })
+    }
+
+    console.log('🪙 ', res.length, 'Tokens')
     return res;
 }
 
