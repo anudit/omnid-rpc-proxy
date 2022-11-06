@@ -7,7 +7,7 @@ specifiers:
   '@fastify/cors': ^8.1.1
   '@fastify/helmet': ^10.0.2
   '@fastify/static': ^6.5.0
-  '@theconvospace/sdk': ^0.6.4
+  '@theconvospace/sdk': ^0.6.5
   '@types/node': ^18.11.9
   cross-fetch: ^3.1.5
   dotenv: ^16.0.3
@@ -28,7 +28,7 @@ dependencies:
   '@fastify/cors': 8.1.1
   '@fastify/helmet': 10.0.2
   '@fastify/static': 6.5.0
-  '@theconvospace/sdk': 0.6.4
+  '@theconvospace/sdk': 0.6.5
   cross-fetch: 3.1.5
   dotenv: 16.0.3
   eth-phishing-detect: 1.2.0
@@ -609,8 +609,8 @@ packages:
     resolution: {integrity: sha512-WfqfX/eXGiAd3RJe4VU2snh/ZPwtSjLG4ynQ/vYzvghTh7dHFcI1wl+nrkWG6lGhukOxOsUHfv8dUXr58D0ayg==}
     dev: false
 
-  /@theconvospace/sdk/0.6.4:
-    resolution: {integrity: sha512-uV+jGtLj3A1NEgDMCFuA0K9CpcueW15invMaBvZWfYtChlLZCwlf65wrimp325x0WcvKReF4tmQbwH4/kwa8EA==}
+  /@theconvospace/sdk/0.6.5:
+    resolution: {integrity: sha512-TAIrTkBcEF/XR11zrcNM9jG7aw2i26SAkgc4qQbsIDwhs2lumM255UMbAbA/vd+dd6RP2I2+3is+m+PW8jUdOw==}
     engines: {node: '>=14.17.0'}
     dependencies:
       '@ethersproject/abi': 5.7.0
