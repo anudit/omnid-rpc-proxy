@@ -33,6 +33,7 @@ export type supportedNetworkIds = "mainnet"
 | "bsc-testnet"
 | "fantom"
 | "fantom-testnet"
+| "shardeum-testnet"
 | "manual";
 
 export interface Dictionary<T> {
@@ -180,6 +181,7 @@ export type supportedEnvVars = "MAINNET_RPC_URL"
 | "BSC_TESTNET_RPC_URL"
 | "FANTOM_RPC_URL"
 | "FANTOM_TESTNET_RPC_URL"
+| "SHARDEUM_TESTNET_RPC_URL"
 | "TENDERLY_USER"
 | "TENDERLY_PROJECT"
 | "TENDERLY_ACCESS_KEY"

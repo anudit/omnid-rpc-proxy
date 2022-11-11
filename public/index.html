@@ -62,7 +62,7 @@
     </style>
     <body style="font-family: system-ui;" class="markdown-body">
         <h1>🛡️ Omnid - RPC Proxy</h1>
-        <p>Omnid's RPC is an <a href="https://github.com/anudit/omnid-proxy-rpc" target='_blank'>open-source</a>, self-hostable RPC Proxy that scans the transactions before sending them to the chain for malicious/phishing activity using <a href="https://omnid.space" target="_blank">Omnid</a>, static analysis, transaction simulation & various vulnerability detectors. If malicious activity is detected, the transaction is rejected before it ever sees the chain.</p>
+        <p>Omnid's RPC is an <a href="https://github.com/anudit/omnid-proxy-rpc" target='_blank'>open-source</a>, self-hostable RPC Proxy that scans the transactions before sending them to the chain for malicious/phishing activity using <a href="https://omnid.space" target="_blank">Omnid</a>, static analysis, transaction simulation, various vulnerability detectors & anonymizing request using various RPCs and Light Clients. If malicious activity is detected, the transaction is rejected before it ever sees the chain.</p>
         <p>TOR Address: <code>omnid2kq4qppsp2a5hgeqok6ahkfo23tdtoe7km4uier4o43taxct5ad.onion</code></p>
         <a href="https://docs.theconvo.space/docs/ConvoX/omnid-rpc" target="_blank">Docs</a>
         <br/>
@@ -262,6 +262,21 @@
                 <td><code><span class="hn"></span>/arbitrum-testnet</code> <div onclick="addToMM('arbitrum-testnet')" class="mm" title="Add Chain to MetaMask"></div></td>
                 <td>421613 <code>0x66EED</code></td>
                 <td><span id="arbitrum-testnet"></span></td>
+            </tr>
+            <tr>
+                <th colspan="4">Shardeum</th>
+            </tr>
+            <tr>
+                <th>Network</th>
+                <th>RPC</th>
+                <th>ChainId</th>
+                <th>Head</th>
+            </tr>
+            <tr>
+                <td>Testnet</td>
+                <td><code><span class="hn"></span>/shardeum-testnet</code> <div onclick="addToMM('shardeum-testnet')" class="mm" title="Add Chain to MetaMask"></div></td>
+                <td>8081 <code>0x1F91</code></td>
+                <td><span id="shardeum-testnet"></span></td>
             </tr>
             <tr>
                 <th colspan="4">Advanced</th>
@@ -484,6 +499,12 @@
                 chainId: '0x66EED',
                 chainName: 'Omnid Arbitrum Testnet',
                 blockExplorer: 'https://goerli-rollup-explorer.arbitrum.io'
+            },
+            'shardeum-testnet':{
+                rpc: `${window.location.origin}/shardeum-testnet`,
+                chainId: '0x1F91',
+                chainName: 'Omnid Shardeum Testnet',
+                blockExplorer: 'https://explorer-liberty20.shardeum.org'
             }
         }
         Object.freeze(networks);

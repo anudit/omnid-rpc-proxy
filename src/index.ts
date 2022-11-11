@@ -80,6 +80,7 @@ const netIdToEnv =  new Map<supportedNetworkIds, supportedEnvVars>([
     ['bsc-testnet', 'BSC_TESTNET_RPC_URL'],
     ['fantom', 'FANTOM_RPC_URL'],
     ['fantom-testnet', 'FANTOM_TESTNET_RPC_URL'],
+    ['shardeum-testnet', 'SHARDEUM_TESTNET_RPC_URL'],
 ]);
 
 const networkToRpc = (netId: supportedNetworkIds): string => {
