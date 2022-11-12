@@ -29,9 +29,7 @@ RUN chown -R tor:root /var/lib/tor
 RUN chmod -R 700 /var/lib/tor
 RUN chmod 755 setup_tor.sh
 
-RUN curl https://raw.githubusercontent.com/a16z/helios/master/heliosup/install | bash
-RUN heliosup
-RUN chmod 755 run_helios.sh
+RUN chmod 755 install_helios.sh
 
 USER tor
 EXPOSE 8853/udp 9150/tcp 80/tcp
