@@ -3,7 +3,7 @@
 
 ## Local Setup
 
-1. Make sure you have [Node.js](https://nodejs.org/en/download/) and [Python](https://www.python.org/downloads/) installed. (Optional) Setup [Tor](https://www.torproject.org/).
+1. Make sure you have [Node.js](https://nodejs.org/en/download/) and [Python](https://www.python.org/downloads/) installed. (Optional) Setup [Tor](https://www.torproject.org/) and Rust.
 
 2. Clone the repo,
     ```
