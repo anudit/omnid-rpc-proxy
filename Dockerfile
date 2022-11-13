@@ -29,7 +29,7 @@ RUN chown -R tor:root /var/lib/tor
 RUN chmod -R 700 /var/lib/tor
 RUN chmod 755 setup_tor.sh
 
-RUN chmod 755 install_helios.sh
+# RUN chmod 755 install_helios.sh
 
 USER tor
 EXPOSE 8853/udp 9150/tcp 80/tcp

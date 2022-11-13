@@ -12,7 +12,6 @@
     "startwithtor:astart": "node ./dist/index.js",
     "startwithtor:tor": "./setup_tor.sh",
     "startwithtor:kevlar": "npx @lightclients/kevlar",
-    "startwithtor:helios": "./install_helios.sh",
     "startdev": "clear && nodemon ./dist/index.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
