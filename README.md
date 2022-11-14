@@ -7,7 +7,7 @@
 
 2. Clone the repo,
     ```
-    git clone https://github.com/anudit/omnid-proxy-rpc
+    git clone https://github.com/anudit/omnid-rpc-proxy
     ```
 
 3. Install Dependencies,
@@ -30,7 +30,7 @@
 
 1. Clone the repo,
     ```
-    git clone https://github.com/anudit/omnid-proxy-rpc
+    git clone https://github.com/anudit/omnid-rpc-proxy
     ```
 
 2. Setup `.env` file (just like `.env.sample`) in the root of the cloned dir.

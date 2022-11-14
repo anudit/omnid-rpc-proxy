@@ -1,5 +1,5 @@
 {
-  "name": "omnid-proxy-rpc",
+  "name": "omnid-rpc-proxy",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
