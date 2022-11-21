@@ -160,10 +160,9 @@ async function sendToRpc(network: supportedNetworkIds, req: FastifyRequest, over
         if (rpcUrl !== undefined){
 
             // Proxy the Request without any PII.
-            let data = await fetch(rpcUrl, {
+            let reqOptions = {
                 method: "POST",
                 body: JSON.stringify(req.body),
-                // @ts-expect-error - shut up ts, it works.
                 agent: query?.useTor === 'true' ? new SocksProxyAgent(proxyUrl) : null,
                 headers: {
                     'Content-Type': 'application/json',
@@ -171,7 +170,9 @@ async function sendToRpc(network: supportedNetworkIds, req: FastifyRequest, over
                     "infura-source": 'metamask/internal',                           // for infura based rpc urls, look like metamask xD.
                     "origin": 'chrome-extension://nkbihfbeogaeaoehlefnkodbefgpgknn' // for infura based rpc urls, look like metamask xD.
                 }
-            }).then(e=>e.json());
+            };
+            // console.log('reqOptions', reqOptions);
+            let data = await fetch(rpcUrl, reqOptions).then(e=>e.json());
 
             // console.log('sendToRpc/result', rpcUrl, data);
             return data;
@@ -197,7 +198,7 @@ async function processTxs(network: supportedNetworkIds, req: FastifyRequest) {
     var deserializedTx = FeeMarketEIP1559Transaction.fromSerializedTx(txData);
     var deserializedTxParsed = deserializedTx.toJSON();
 
-    // console.log('deserializedTx', deserializedTxParsed);
+    console.log('deserializedTx', deserializedTxParsed);
 
     // Check `to`
     //      if malicious then revert txn
@@ -329,6 +330,11 @@ server.get('/whitelist', async (req: FastifyRequest, reply: FastifyReply) => {
     return reply.send(Array.from(whitelist.values()));
 })
 
+server.get('/tokenlist', async (req: FastifyRequest, reply: FastifyReply) => {
+    reply.headers({ 'Cache-Control': `max-age=${24*60*60}` });
+    return reply.send({tokens: tokenList?.length});
+})
+
 server.get('/tor', async (req: FastifyRequest, reply: FastifyReply) => {
     try {
         const { stdout, stderr } = await exec('cat /var/lib/tor/hidden_service/hostname');
@@ -403,7 +409,7 @@ server.post('/:network', async (req: FastifyRequest, reply: FastifyReply) => {
 
     if (!isPhishing && Boolean(hashTable.get(hostname)) === false){
         const {network} = req.params as IRouteParams;
-
+        // console.log('req', network, body, req.query)
         if (network && netIdToEnv.get(network)){ // valid chain
             if (body['method'] == 'eth_sendRawTransaction') {
                 // Check for Malicious Activity
