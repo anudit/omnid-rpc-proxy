@@ -17,7 +17,7 @@ import { Convo } from '@theconvospace/sdk'
 import { getAddress, isAddress } from '@ethersproject/address'
 const checkForPhishing = require('eth-phishing-detect');
 import { AlchemySimulationReq, AlchemySimulationResp, IQuerystring, IRouteParams, JsonRpcReq, RpcResp, lifejacketSupportedNetwork, SourifyResp, supportedNetworkIds, SupportedJackets, DoHResp, MegaHashType, blacklistIndices, Dictionary, DapplistResponse, DefipulseResponse, DappsResponse, supportedEnvVars, MetaData, WalletconnectResponse } from './types';
-import { getEnv, getEnvJson, parseSerialFromAnswerData } from "./utils";
+import { debugLog, getEnv, getEnvJson, parseSerialFromAnswerData } from "./utils";
 import { testUsingMythril } from "./lifejackets/mythril";
 import { testUsingSlither } from "./lifejackets/slither";
 import { closest, distance } from 'fastest-levenshtein';
@@ -62,7 +62,6 @@ const netIdToEnv =  new Map<supportedNetworkIds, supportedEnvVars>([
     ['mainnet-flashbots', 'MAINNET_FLASHBOTS_RPC_URL'],
     ['mainnet-flashbots-fast', 'MAINNET_FLASHBOTS_FAST_RPC_URL'],
     ['ropsten', 'ROPSTEN_RPC_URL'],
-    ['kovan', 'KOVAN_RPC_URL'],
     ['rinkeby', 'RINKEBY_RPC_URL'],
     ['goerli', 'GOERLI_RPC_URL'],
     ['sepolia', 'SEPOLIA_RPC_URL'],
@@ -409,9 +408,9 @@ server.post('/:network', async (req: FastifyRequest, reply: FastifyReply) => {
 
     if (!isPhishing && Boolean(hashTable.get(hostname)) === false){
         const {network} = req.params as IRouteParams;
-        // console.log('req', network, body, req.query)
         if (network && netIdToEnv.get(network)){ // valid chain
             if (body['method'] == 'eth_sendRawTransaction') {
+                debugLog('req', network, body, req.query)
                 // Check for Malicious Activity
                 let resp = await processTxs(network, req)
                 return reply.send(resp);

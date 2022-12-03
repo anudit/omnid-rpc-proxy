@@ -1,0 +1,3 @@
+tasks:
+  - init: pnpm install && pnpm run build && pip install -r requirements.txt
+    command: pnpm run dev

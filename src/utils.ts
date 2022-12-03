@@ -11,6 +11,10 @@ export const getEnvJson = (envVar: supportedEnvVars) => {
     return JSON.parse(getEnv(envVar)) as Array<string>;
 }
 
+export const debugLog = (...args: any[]) => {
+    if (getEnv('DEBUG') === 'true') console.log(...args);
+}
+
 export const parseSerialFromAnswerData = (data: string): (false | Date) => {
     let dataItems = data.split(' ');
     let timestamp = dataItems[2];

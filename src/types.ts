@@ -15,7 +15,6 @@ export type supportedNetworkIds = "mainnet"
 | "mainnet-flashbots"
 | "mainnet-flashbots-fast"
 | "ropsten"
-| "kovan"
 | "rinkeby"
 | "goerli"
 | "sepolia"
@@ -162,7 +161,6 @@ export interface TestResult<T> {
 export type supportedEnvVars = "MAINNET_RPC_URL"
 | "SEPOLIA_RPC_URL"
 | "ROPSTEN_RPC_URL"
-| "KOVAN_RPC_URL"
 | "RINKEBY_RPC_URL"
 | "GOERLI_RPC_URL"
 | "MAINNET_FLASHBOTS_RPC_URL"
@@ -194,6 +192,7 @@ export type supportedEnvVars = "MAINNET_RPC_URL"
 | "BSCSCAN_API_KEY"
 | "FTMSCAN_API_KEY"
 | "PORT"
+| "DEBUG"
 
 export type SupportedJackets = "mythril" | "slither";
 
