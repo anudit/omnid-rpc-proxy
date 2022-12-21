@@ -30,7 +30,7 @@ RUN chmod -R 700 /var/lib/tor
 RUN chmod 755 setup_tor.sh
 
 RUN wget https://github.com/a16z/helios/releases/download/0.1.0/helios_linux_amd64.tar.gz
-RUN tar -xvf helios_linux_amd64.tar.gz /app
+RUN tar -xvf helios_linux_amd64.tar.gz --directory /app
 RUN rm -rf helios_linux_amd64.tar.gz
 RUN ls /app
 
