@@ -33,6 +33,7 @@ RUN wget https://github.com/a16z/helios/releases/download/0.1.0/helios_linux_amd
 RUN tar -xvf helios_linux_amd64.tar.gz --directory /app
 RUN rm -rf helios_linux_amd64.tar.gz
 RUN ls /app
+RUN chmod 755 /app/helios 
 
 USER tor
 EXPOSE 8853/udp 9150/tcp 80/tcp
