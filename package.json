@@ -12,6 +12,7 @@
     "startwithtor:astart": "node ./dist/index.js",
     "startwithtor:tor": "./setup_tor.sh",
     "startwithtor:kevlar": "npx @lightclients/kevlar",
+    "startwithtor:helios": "./helios --rpc-port 8547 --execution-rpc https://eth-mainnet.g.alchemy.com/v2/jz1AlVEXLDxlzNMcKDg9To03aBnOssyH",
     "startdev": "clear && nodemon ./dist/index.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -23,12 +24,12 @@
   "author": "Anudit Nagar",
   "license": "ISC",
   "dependencies": {
-    "@ethereumjs/tx": "^4.0.1",
+    "@ethereumjs/tx": "^4.0.2",
     "@ethersproject/address": "^5.7.0",
     "@fastify/compress": "^6.2.0",
     "@fastify/cors": "^8.2.0",
     "@fastify/helmet": "^10.1.0",
-    "@fastify/static": "^6.5.1",
+    "@fastify/static": "^6.6.0",
     "@theconvospace/sdk": "^0.6.7",
     "cross-fetch": "^3.1.5",
     "dotenv": "^16.0.3",
@@ -40,9 +41,9 @@
     "socks-proxy-agent": "^7.0.0"
   },
   "devDependencies": {
-    "@types/node": "^18.11.10",
+    "@types/node": "^18.11.17",
     "npm-run-all": "^4.1.5",
     "tsup": "^6.5.0",
-    "typescript": "^4.9.3"
+    "typescript": "^4.9.4"
   }
 }

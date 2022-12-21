@@ -31,6 +31,9 @@ RUN chmod 755 setup_tor.sh
 
 # RUN chmod 755 install_helios.sh
 
+RUN wget https://github.com/a16z/helios/releases/download/0.1.0/helios_linux_amd64.tar.gz
+RUN tar -xf helios_linux_amd64.tar.gz
+
 USER tor
 EXPOSE 8853/udp 9150/tcp 80/tcp
 
