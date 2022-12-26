@@ -17,7 +17,7 @@
     solc-select install all
     ```
 
-4. Setup `.env` file (just like `.env.sample`) in the root of the cloned dir.
+4. Setup `.env` file (just like `.env.sample`) with the RPCs in the root of the cloned dir.
 
 5. Compile and run.
 

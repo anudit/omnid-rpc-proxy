@@ -415,6 +415,13 @@ server.post('/:network', async (req: FastifyRequest, reply: FastifyReply) => {
                 let resp = await processTxs(network, req)
                 return reply.send(resp);
             }
+            else if (body['method'] == 'web3_clientVersion') {
+                return reply.send({
+                    "jsonrpc":"2.0",
+                    "id":42,
+                    "result":"omnid/proxy/1.0.0"
+                });
+            }
             else {
                 let resp = await sendToRpc(network, req);
                 return reply.send(resp)

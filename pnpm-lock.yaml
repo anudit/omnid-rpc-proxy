@@ -7,7 +7,7 @@ specifiers:
   '@fastify/cors': ^8.2.0
   '@fastify/helmet': ^10.1.0
   '@fastify/static': ^6.6.0
-  '@theconvospace/sdk': ^0.6.7
+  '@theconvospace/sdk': ^0.6.8
   '@types/node': ^18.11.17
   cross-fetch: ^3.1.5
   dotenv: ^16.0.3
@@ -28,7 +28,7 @@ dependencies:
   '@fastify/cors': 8.2.0
   '@fastify/helmet': 10.1.0
   '@fastify/static': 6.6.0
-  '@theconvospace/sdk': 0.6.7
+  '@theconvospace/sdk': 0.6.8
   cross-fetch: 3.1.5
   dotenv: 16.0.3
   eth-phishing-detect: 1.2.0
@@ -46,8 +46,8 @@ devDependencies:
 
 packages:
 
-  /@babel/runtime/7.20.6:
-    resolution: {integrity: sha512-Q+8MqP7TiHMWzSfwiJwXCjyf4GYA4Dgw3emg/7xmwsdLJOZUp+nMqcOwOzzYheuM1rhDu8FSj2l0aoMygEuXuA==}
+  /@babel/runtime/7.20.7:
+    resolution: {integrity: sha512-UF0tvkUtxwAgZ5W/KrkHf0Rn0fdnLDU9ScxBrEVNUprE/MzirjK4MJUX1/BVDv00Sv8cljtukVK1aky++X1SjQ==}
     engines: {node: '>=6.9.0'}
     dependencies:
       regenerator-runtime: 0.13.11
@@ -557,11 +557,11 @@ packages:
       buffer: 6.0.3
     dev: false
 
-  /@solana/web3.js/1.70.3:
-    resolution: {integrity: sha512-9JAFXAWB3yhUHnoahzemTz4TcsGqmITPArNlm9795e+LA/DYkIEJIXIosV4ImzDMfqolymZeRgG3O8ewNgYTTA==}
+  /@solana/web3.js/1.72.0:
+    resolution: {integrity: sha512-xMoCk0y/GpiQhHbRjMcrd5NpmkwhAA0c01id7lrr6nhNdz6Uc/CywPdBeZw3Qz6BVZ/qlUoerpKPWeiXqMUjwA==}
     engines: {node: '>=12.20.0'}
     dependencies:
-      '@babel/runtime': 7.20.6
+      '@babel/runtime': 7.20.7
       '@noble/ed25519': 1.7.1
       '@noble/hashes': 1.1.5
       '@noble/secp256k1': 1.7.0
@@ -611,13 +611,13 @@ packages:
     resolution: {integrity: sha512-WfqfX/eXGiAd3RJe4VU2snh/ZPwtSjLG4ynQ/vYzvghTh7dHFcI1wl+nrkWG6lGhukOxOsUHfv8dUXr58D0ayg==}
     dev: false
 
-  /@theconvospace/sdk/0.6.7:
-    resolution: {integrity: sha512-IujxQsGBR5gMNbBMpyQdRw7fb/lIXNbTXJ0G8ZiZSMN2U01UFAD22EMLjvs14xjQXKLIKJxS10yUnpnERMCdxw==}
+  /@theconvospace/sdk/0.6.8:
+    resolution: {integrity: sha512-cJoJ1qxghoEvVR5hx9qYeX+v7wHpvrC1GJtZ0KDGMa08T3IanPFf3F6+3b66FGJP0gMgEZQAfWrwOYq2o1GJuA==}
     engines: {node: '>=14.17.0'}
     dependencies:
       '@ethersproject/abi': 5.7.0
       '@ethersproject/providers': 5.7.2
-      '@solana/web3.js': 1.70.3
+      '@solana/web3.js': 1.72.0
       cross-fetch: 3.1.5
       ethers: 5.7.2
       siwe: 1.1.6_ethers@5.7.2
@@ -985,7 +985,7 @@ packages:
     dev: true
 
   /concat-map/0.0.1:
-    resolution: {integrity: sha512-/Srv4dswyQNBfohGpz9o6Yb3Gz3SrUDqBH5rTuhGR7ahtlbYKnVxw2bCFMRljaA7EXHaXZ8wsHdodFvbkhKmqg==}
+    resolution: {integrity: sha1-2Klr13/Wjfd5OnMDajug1UBdR3s=}
     dev: true
 
   /content-disposition/0.5.4:
@@ -1145,7 +1145,7 @@ packages:
     dev: false
 
   /ee-first/1.1.1:
-    resolution: {integrity: sha512-WMwm9LhRUo+WUaRN+vRuETqG89IgZphVSNkdFgeb6sS/E4OrDIN7t48CAewSHXc6C8lefD8KKfr5vY61brQlow==}
+    resolution: {integrity: sha1-WQxhFWsK4vTwJVcyoViyZrxWsh0=}
     dev: false
 
   /elliptic/6.5.4:
@@ -1691,7 +1691,7 @@ packages:
     dev: false
 
   /fresh/0.5.2:
-    resolution: {integrity: sha512-zJ2mQYM18rEFOudeV4GShTGIQ7RbzA7ozbU9I/XBpm7kqgMywgmylMwXHxZJmkVoYkna9d2pVXVXPdYTP9ej8Q==}
+    resolution: {integrity: sha1-PYyt2Q2XZWn6g1qx+OSyOhBWBac=}
     engines: {node: '>= 0.6'}
     dev: false
 
@@ -2698,8 +2698,8 @@ packages:
       bn.js: 5.2.1
     dev: false
 
-  /rollup/3.7.5:
-    resolution: {integrity: sha512-z0ZbqHBtS/et2EEUKMrAl2CoSdwN7ZPzL17UMiKN9RjjqHShTlv7F9J6ZJZJNREYjBh3TvBrdfjkFDIXFNeuiQ==}
+  /rollup/3.8.1:
+    resolution: {integrity: sha512-4yh9eMW7byOroYcN8DlF9P/2jCpu6txVIHjEqquQVSx7DI0RgyCCN3tjrcy4ra6yVtV336aLBB3v2AarYAxePQ==}
     engines: {node: '>=14.18.0', npm: '>=8.0.0'}
     hasBin: true
     optionalDependencies:
@@ -2709,7 +2709,7 @@ packages:
   /rpc-websockets/7.5.0:
     resolution: {integrity: sha512-9tIRi1uZGy7YmDjErf1Ax3wtqdSSLIlnmL5OtOzgd5eqPKbsPpwDP5whUDO2LQay3Xp0CcHlcNSGzacNRluBaQ==}
     dependencies:
-      '@babel/runtime': 7.20.6
+      '@babel/runtime': 7.20.7
       eventemitter3: 4.0.7
       uuid: 8.3.2
       ws: 8.11.0_3cxu5zja4e2r5wmvge7mdcljwq
@@ -3124,7 +3124,7 @@ packages:
       joycon: 3.1.1
       postcss-load-config: 3.1.4
       resolve-from: 5.0.0
-      rollup: 3.7.5
+      rollup: 3.8.1
       source-map: 0.8.0-beta.0
       sucrase: 3.29.0
       tree-kill: 1.2.2
