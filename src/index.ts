@@ -61,7 +61,6 @@ const netIdToEnv =  new Map<supportedNetworkIds, supportedEnvVars>([
     ['mainnet', 'MAINNET_RPC_URL'],
     ['mainnet-flashbots', 'MAINNET_FLASHBOTS_RPC_URL'],
     ['mainnet-flashbots-fast', 'MAINNET_FLASHBOTS_FAST_RPC_URL'],
-    ['ropsten', 'ROPSTEN_RPC_URL'],
     ['rinkeby', 'RINKEBY_RPC_URL'],
     ['goerli', 'GOERLI_RPC_URL'],
     ['sepolia', 'SEPOLIA_RPC_URL'],
