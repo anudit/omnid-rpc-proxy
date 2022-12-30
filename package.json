@@ -12,7 +12,7 @@
     "startwithtor:astart": "node ./dist/index.js",
     "startwithtor:tor": "./setup_tor.sh",
     "startwithtor:kevlar": "npx @lightclients/kevlar",
-    "startdev": "clear && nodemon ./dist/index.js",
+    "startdev": "nodemon ./dist/index.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "cacheDirectories": [
@@ -40,7 +40,7 @@
     "socks-proxy-agent": "^7.0.0"
   },
   "devDependencies": {
-    "@types/node": "^18.11.17",
+    "@types/node": "^18.11.18",
     "npm-run-all": "^4.1.5",
     "tsup": "^6.5.0",
     "typescript": "^4.9.4"

@@ -314,6 +314,12 @@ server.get('/', async (req: FastifyRequest, reply: FastifyReply) => {
     return reply.type('text/html').send(stream)
 })
 
+server.get('/demo', async (req: FastifyRequest, reply: FastifyReply) => {
+    const stream = readFileSync(path.join(__dirname, '../public/', 'demo.html'))
+    reply.header("Content-Security-Policy", "default-src *; style-src 'self' 'unsafe-inline' cdnjs.cloudflare.com fonts.googleapis.com; script-src 'self' 'unsafe-inline'; img-src data: ;");
+    return reply.type('text/html').send(stream)
+})
+
 server.get('/ping', async (req: FastifyRequest, reply: FastifyReply) => {
     return reply.send({'hello':'world'})
 })
@@ -418,7 +424,7 @@ server.post('/:network', async (req: FastifyRequest, reply: FastifyReply) => {
                 return reply.send({
                     "jsonrpc":"2.0",
                     "id":42,
-                    "result":"omnid/proxy/1.0.0"
+                    "result":"Omnid/Proxy/1.0.0"
                 });
             }
             else {
