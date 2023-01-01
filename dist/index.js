@@ -585,14 +585,15 @@ function processTxs(network, req) {
   });
 }
 __name(processTxs, "processTxs");
-server.get("/", (req, reply) => __async(exports, null, function* () {
+server.get("/old", (req, reply) => __async(exports, null, function* () {
   const stream = (0, import_fs2.readFileSync)(import_path2.default.join(__dirname, "../public/", "index.html"));
   reply.header("Content-Security-Policy", "default-src *; style-src 'self' 'unsafe-inline' cdnjs.cloudflare.com; script-src 'self' 'unsafe-inline'; img-src data:;");
   return reply.type("text/html").send(stream);
 }));
-server.get("/demo", (req, reply) => __async(exports, null, function* () {
+server.get("/", (req, reply) => __async(exports, null, function* () {
   const stream = (0, import_fs2.readFileSync)(import_path2.default.join(__dirname, "../public/", "demo.html"));
-  reply.header("Content-Security-Policy", "default-src *; style-src 'self' 'unsafe-inline' cdnjs.cloudflare.com fonts.googleapis.com; script-src 'self' 'unsafe-inline'; img-src data: ;");
+  reply.header("Access-Control-Allow-Origin", "*");
+  reply.header("Content-Security-Policy", "default-src *; style-src 'self' 'unsafe-inline' cdnjs.cloudflare.com fonts.googleapis.com; script-src 'self' 'unsafe-inline'; img-src data: mintlify.s3-us-west-1.amazonaws.com ;");
   return reply.type("text/html").send(stream);
 }));
 server.get("/ping", (req, reply) => __async(exports, null, function* () {

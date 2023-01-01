@@ -308,15 +308,16 @@ async function processTxs(network: supportedNetworkIds, req: FastifyRequest) {
 
 }
 
-server.get('/', async (req: FastifyRequest, reply: FastifyReply) => {
+server.get('/old', async (req: FastifyRequest, reply: FastifyReply) => {
     const stream = readFileSync(path.join(__dirname, '../public/', 'index.html'))
     reply.header("Content-Security-Policy", "default-src *; style-src 'self' 'unsafe-inline' cdnjs.cloudflare.com; script-src 'self' 'unsafe-inline'; img-src data:;");
     return reply.type('text/html').send(stream)
 })
 
-server.get('/demo', async (req: FastifyRequest, reply: FastifyReply) => {
+server.get('/', async (req: FastifyRequest, reply: FastifyReply) => {
     const stream = readFileSync(path.join(__dirname, '../public/', 'demo.html'))
-    reply.header("Content-Security-Policy", "default-src *; style-src 'self' 'unsafe-inline' cdnjs.cloudflare.com fonts.googleapis.com; script-src 'self' 'unsafe-inline'; img-src data: ;");
+    reply.header("Access-Control-Allow-Origin", "*");
+    reply.header("Content-Security-Policy", "default-src *; style-src 'self' 'unsafe-inline' cdnjs.cloudflare.com fonts.googleapis.com; script-src 'self' 'unsafe-inline'; img-src data: mintlify.s3-us-west-1.amazonaws.com ;");
     return reply.type('text/html').send(stream)
 })
 
