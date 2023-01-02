@@ -271,16 +271,6 @@ var numToBlacklist = {
     id: "blueshell-io/scamdb",
     name: "BlueShell",
     link: "https://blueshell.io/"
-  },
-  14: {
-    id: "rpolysec/web3_blocklist",
-    name: "rpolysec",
-    link: "https://github.com/rpolysec/web3_blocklist/blob/main/blocklist.json"
-  },
-  15: {
-    id: "rpolysec/web3_blocklist",
-    name: "rpolysec",
-    link: "https://github.com/rpolysec/web3_blocklist/blob/main/polygon_blocklist.json"
   }
 };
 

@@ -68,6 +68,22 @@
             border-bottom-style: solid;
             padding: 40px;
         }
+        .lj > p {
+            font-size: large;
+            color: #d7d7d7;
+        }
+        .lj > p > a, .ljex > a {
+            text-decoration: none;
+            border-bottom-width: 1px;
+            border-bottom-color: #a524ff;
+            border-bottom-style: dashed;
+            color: white;
+            font-weight: 900;
+        }
+        .lj > p > a:hover, .ljex > a:hover {
+            border-bottom-width: 2px;
+            border-bottom-style: dotted;
+        }
         .ljname {
             color: #04b4ff;
             margin: 0px;
@@ -359,7 +375,7 @@
                     </div>
                 </div>
                 <div>
-                    <div class="copy" onclick="copyRpc('mainnet')"></div>
+                    <div class="copy" onclick="copyRpc('goerli')"></div>
                     <input value="https://rpc.omnid.space/goerli" disabled="true" />
                     <div class="mm"></div>
                 </div>
@@ -381,7 +397,7 @@
                     </div>
                 </div>
                 <div>
-                    <div class="copy" onclick="copyRpc('mainnet')"></div>
+                    <div class="copy" onclick="copyRpc('rinkeby')"></div>
                     <input value="https://rpc.omnid.space/rinkeby" disabled="true" />
                     <div class="mm"></div>
                 </div>
@@ -403,7 +419,7 @@
                     </div>
                 </div>
                 <div>
-                    <div class="copy" onclick="copyRpc('mainnet')"></div>
+                    <div class="copy" onclick="copyRpc('sepolia')"></div>
                     <input value="https://rpc.omnid.space/sepolia" disabled="true" />
                     <div class="mm"></div>
                 </div>
@@ -425,7 +441,7 @@
                     </div>
                 </div>
                 <div>
-                    <div class="copy" onclick="copyRpc('mainnet')"></div>
+                    <div class="copy" onclick="copyRpc('mainnet-flashbots')"></div>
                     <input value="https://rpc.omnid.space/mainnet-flashbots" disabled="true" />
                     <div class="mm"></div>
                 </div>
@@ -447,7 +463,7 @@
                     </div>
                 </div>
                 <div>
-                    <div class="copy" onclick="copyRpc('mainnet')"></div>
+                    <div class="copy" onclick="copyRpc('mainnet-flashbots-fast')"></div>
                     <input value="https://rpc.omnid.space/mainnet-flashbots-fast" disabled="true" />
                     <div class="mm"></div>
                 </div>
@@ -469,7 +485,7 @@
                     </div>
                 </div>
                 <div>
-                    <div class="copy" onclick="copyRpc('mainnet')"></div>
+                    <div class="copy" onclick="copyRpc('goerli-flashbots')"></div>
                     <input value="https://rpc.omnid.space/goerli-flashbots" disabled="true" />
                     <div class="mm"></div>
                 </div>
@@ -491,7 +507,7 @@
                     </div>
                 </div>
                 <div>
-                    <div class="copy" onclick="copyRpc('mainnet')"></div>
+                    <div class="copy" onclick="copyRpc('polygon')"></div>
                     <input value="https://rpc.omnid.space/polygon" disabled="true" />
                     <div class="mm"></div>
                 </div>
@@ -513,7 +529,7 @@
                     </div>
                 </div>
                 <div>
-                    <div class="copy" onclick="copyRpc('mainnet')"></div>
+                    <div class="copy" onclick="copyRpc('polygon-testnet')"></div>
                     <input value="https://rpc.omnid.space/polygon-testnet" disabled="true" />
                     <div class="mm"></div>
                 </div>
@@ -535,7 +551,7 @@
                     </div>
                 </div>
                 <div>
-                    <div class="copy" onclick="copyRpc('mainnet')"></div>
+                    <div class="copy" onclick="copyRpc('polygon-zkevm')"></div>
                     <input value="https://rpc.omnid.space/polygon-zkevm" disabled="true" />
                     <div class="mm"></div>
                 </div>
@@ -557,7 +573,7 @@
                     </div>
                 </div>
                 <div>
-                    <div class="copy" onclick="copyRpc('mainnet')"></div>
+                    <div class="copy" onclick="copyRpc('bsc')"></div>
                     <input value="https://rpc.omnid.space/bsc" disabled="true" />
                     <div class="mm"></div>
                 </div>
@@ -579,7 +595,7 @@
                     </div>
                 </div>
                 <div>
-                    <div class="copy" onclick="copyRpc('mainnet')"></div>
+                    <div class="copy" onclick="copyRpc('bsc-testnet')"></div>
                     <input value="https://rpc.omnid.space/bsc-testnet" disabled="true" />
                     <div class="mm"></div>
                 </div>
@@ -601,7 +617,7 @@
                     </div>
                 </div>
                 <div>
-                    <div class="copy" onclick="copyRpc('mainnet')"></div>
+                    <div class="copy" onclick="copyRpc('fantom')"></div>
                     <input value="https://rpc.omnid.space/fantom" disabled="true" />
                     <div class="mm"></div>
                 </div>
@@ -623,7 +639,7 @@
                     </div>
                 </div>
                 <div>
-                    <div class="copy" onclick="copyRpc('mainnet')"></div>
+                    <div class="copy" onclick="copyRpc('fantom-testnet')"></div>
                     <input value="https://rpc.omnid.space/fantom-testnet" disabled="true" />
                     <div class="mm"></div>
                 </div>
@@ -645,7 +661,7 @@
                     </div>
                 </div>
                 <div>
-                    <div class="copy" onclick="copyRpc('mainnet')"></div>
+                    <div class="copy" onclick="copyRpc('optimism')"></div>
                     <input value="https://rpc.omnid.space/optimism" disabled="true" />
                     <div class="mm"></div>
                 </div>
@@ -667,7 +683,7 @@
                     </div>
                 </div>
                 <div>
-                    <div class="copy" onclick="copyRpc('mainnet')"></div>
+                    <div class="copy" onclick="copyRpc('optimism-testnet')"></div>
                     <input value="https://rpc.omnid.space/optimism-testnet" disabled="true" />
                     <div class="mm"></div>
                 </div>
@@ -689,7 +705,7 @@
                     </div>
                 </div>
                 <div>
-                    <div class="copy" onclick="copyRpc('mainnet')"></div>
+                    <div class="copy" onclick="copyRpc('optimism-bedrock')"></div>
                     <input value="https://rpc.omnid.space/optimism-bedrock" disabled="true" />
                     <div class="mm"></div>
                 </div>
@@ -711,7 +727,7 @@
                     </div>
                 </div>
                 <div>
-                    <div class="copy" onclick="copyRpc('mainnet')"></div>
+                    <div class="copy" onclick="copyRpc('arbitrum')"></div>
                     <input value="https://rpc.omnid.space/arbitrum" disabled="true" />
                     <div class="mm"></div>
                 </div>
@@ -733,7 +749,7 @@
                     </div>
                 </div>
                 <div>
-                    <div class="copy" onclick="copyRpc('mainnet')"></div>
+                    <div class="copy" onclick="copyRpc('arbitrum-nova')"></div>
                     <input value="https://rpc.omnid.space/arbitrum-nova" disabled="true" />
                     <div class="mm"></div>
                 </div>
@@ -755,7 +771,7 @@
                     </div>
                 </div>
                 <div>
-                    <div class="copy" onclick="copyRpc('mainnet')"></div>
+                    <div class="copy" onclick="copyRpc('arbitrum-testnet')"></div>
                     <input value="https://rpc.omnid.space/arbitrum-testnet" disabled="true" />
                     <div class="mm"></div>
                 </div>
@@ -777,7 +793,7 @@
                     </div>
                 </div>
                 <div>
-                    <div class="copy" onclick="copyRpc('mainnet')"></div>
+                    <div class="copy" onclick="copyRpc('shardeum-testnet')"></div>
                     <input value="https://rpc.omnid.space/shardeum-testnet" disabled="true" />
                     <div class="mm"></div>
                 </div>
@@ -867,7 +883,9 @@
                 <br/>
                 <div class="column ljex">
                     <span class="tag">GET</span>
-                    <code>https://rpc.omnid.space/blacklist/metamas.io</code>
+                    <a href="https://rpc.omnid.space/blacklist/metamas.io" target="_blank">
+                        <code>https://rpc.omnid.space/blacklist/metamas.io</code>
+                    </a>
                 </div>
             </div>
 
@@ -878,7 +896,9 @@
                 <br/>
                 <div class="column ljex">
                     <span class="tag">GET</span>
-                    <code>https://rpc.omnid.space/blacklist</code>
+                    <a href="https://rpc.omnid.space/blacklist" target="_blank">
+                        <code>https://rpc.omnid.space/blacklist</code>
+                    </a>
                 </div>
             </div>
 
@@ -889,7 +909,9 @@
                 <br/>
                 <div class="column ljex">
                     <span class="tag">GET</span>
-                    <code>https://rpc.omnid.space/whitelist</code>
+                    <a href="https://rpc.omnid.space/whitelist" target="_blank">
+                        <code>https://rpc.omnid.space/whitelist</code>
+                    </a>
                 </div>
             </div>
 
@@ -900,7 +922,9 @@
                 <br/>
                 <div class="column ljex">
                     <span class="tag">GET</span>
-                    <code>https://rpc.omnid.space/malicious/0x627a...1dcb9t</code>
+                    <a href="https://rpc.omnid.space/malicious/0x627a22ff70cb84e74c9c70e2d5b0b75af5a1dcb9" target="_blank">
+                        <code>https://rpc.omnid.space/malicious/0x627a...1dcb9t</code>
+                    </a>
                 </div>
             </div>
 
@@ -911,7 +935,9 @@
                 <br/>
                 <div class="column ljex">
                     <span class="tag">GET</span>
-                    <code>https://rpc.omnid.space/tokendeets/0x0x2791...4174</code>
+                    <a href="https://rpc.omnid.space/tokendeets/0x2791bca1f2de4661ed88a30c99a7a9449aa84174" target="_blank">
+                        <code>https://rpc.omnid.space/tokendeets/0x2791...4174</code>
+                    </a>
                 </div>
             </div>
 
@@ -1131,6 +1157,38 @@
             }
         }
 
+
+        function copyRpc(rpc){
+            copyToClipboard(networks[rpc]['rpc']);
+        }
+
+        function copyToClipboard(textToCopy, element = false) {
+            navigator.permissions.query({name: "clipboard-write"}).then(result => {
+                if (result.state == "granted" || result.state == "prompt") {
+                navigator.clipboard.writeText(textToCopy).then(function() {
+
+                    if (element) element.innerHTML = `
+                    <svg aria-hidden="true" height="16" viewBox="0 0 16 16" version="1.1" width="16">
+                    <path fill="#0f0" fillRule="evenodd" d="M13.78 4.22a.75.75 0 010 1.06l-7.25 7.25a.75.75 0 01-1.06 0L2.22 9.28a.75.75 0 011.06-1.06L6 10.94l6.72-6.72a.75.75 0 011.06 0z"></path>
+                    </svg>
+                    `;
+
+                    setTimeout(()=>{
+                    if (element) element.innerHTML = `
+                    <svg aria-hidden="true" height="16" viewBox="0 0 16 16" version="1.1" width="16">
+                        <path fillRule="evenodd" d="M0 6.75C0 5.784.784 5 1.75 5h1.5a.75.75 0 010 1.5h-1.5a.25.25 0 00-.25.25v7.5c0 .138.112.25.25.25h7.5a.25.25 0 00.25-.25v-1.5a.75.75 0 011.5 0v1.5A1.75 1.75 0 019.25 16h-7.5A1.75 1.75 0 010 14.25v-7.5z"></path>
+                        <path fillRule="evenodd" d="M5 1.75C5 .784 5.784 0 6.75 0h7.5C15.216 0 16 .784 16 1.75v7.5A1.75 1.75 0 0114.25 11h-7.5A1.75 1.75 0 015 9.25v-7.5zm1.75-.25a.25.25 0 00-.25.25v7.5c0 .138.112.25.25.25h7.5a.25.25 0 00.25-.25v-7.5a.25.25 0 00-.25-.25h-7.5z"></path>
+                    </svg>
+                    `}, 1000);
+                }, function() {
+                    alert("Clipboard write failed.")
+                });
+                }
+                else {
+                    alert("Clipboard permission denied.")
+                }
+            });
+        }
 
     </script>
 </html>
