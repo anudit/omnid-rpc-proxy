@@ -6,8 +6,9 @@ const server: FastifyInstance = fastify({ logger: false })
 import helmet from '@fastify/helmet'
 import compress from '@fastify/compress'
 import cors from '@fastify/cors'
+import staticServe from '@fastify/static'
 
-import { readFileSync } from 'fs';
+// import { readFileSync } from 'fs';
 import path from 'path'
 
 import fetch from 'cross-fetch';
@@ -31,6 +32,10 @@ const exec = util.promisify(require('node:child_process').exec);
 server.register(helmet, { global: true })
 server.register(compress, { global: true })
 server.register(cors, { origin: "*" })
+
+server.register(staticServe, {
+    root: path.join(__dirname, '../public'),
+})
 
 const MegaHash = require('megahash');
 const hashTable: MegaHashType = new MegaHash();
@@ -308,17 +313,9 @@ async function processTxs(network: supportedNetworkIds, req: FastifyRequest) {
 
 }
 
-server.get('/old', async (req: FastifyRequest, reply: FastifyReply) => {
-    const stream = readFileSync(path.join(__dirname, '../public/', 'index.html'))
-    reply.header("Content-Security-Policy", "default-src *; style-src 'self' 'unsafe-inline' cdnjs.cloudflare.com; script-src 'self' 'unsafe-inline'; img-src data:;");
-    return reply.type('text/html').send(stream)
-})
-
-server.get('/', async (req: FastifyRequest, reply: FastifyReply) => {
-    const stream = readFileSync(path.join(__dirname, '../public/', 'demo.html'))
-    reply.header("Access-Control-Allow-Origin", "*");
+server.get('/', function (req, reply) {
     reply.header("Content-Security-Policy", "default-src *; style-src 'self' 'unsafe-inline' cdnjs.cloudflare.com fonts.googleapis.com; script-src 'self' 'unsafe-inline'; img-src data: mintlify.s3-us-west-1.amazonaws.com ;");
-    return reply.type('text/html').send(stream)
+    return reply.sendFile('demo.html');
 })
 
 server.get('/ping', async (req: FastifyRequest, reply: FastifyReply) => {

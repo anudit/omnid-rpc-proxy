@@ -64,7 +64,7 @@
         }
         .lj {
             border-bottom-width: 1px;
-            border-bottom-color: #ffffff8c;
+            border-bottom-color: #ffffff29;
             border-bottom-style: solid;
             padding: 40px;
         }
@@ -192,7 +192,15 @@
             grid-gap: 10px;
         }
         .ljex{
-            align-items: center;
+            align-items: flex-start;
+        }
+        code {
+            padding: 0.2em 0.4em;
+            margin: 0;
+            font-size: 85%;
+            background-color: rgb(129 110 117 / 24%);
+            border-radius: 6px;
+            line-break: anywhere;
         }
 
         /* Screen larger than 600px? 2 column */
@@ -215,7 +223,8 @@
                 margin-top: 0px;
             }
             .ljex {
-                flex-direction: column;
+                flex-direction: row;
+                align-items: center;
             }
         }
 
@@ -240,6 +249,7 @@
             }
             .ljex {
                 flex-direction: row;
+                align-items: center;
             }
         }
 
@@ -785,7 +795,7 @@
 
             <div class="column lj">
                 <a class="ljname" href="#blockUnverifiedContracts" id="blockUnverifiedContracts">blockUnverifiedContracts</a>
-                <p>Block Transactions to Un-Verified Contracts. Powered by Sourcify.dev. Suported values: true, false.</p>
+                <p>Block Transactions to Un-Verified Contracts. Powered by <a href="https://sourcify.dev/" target="_blank">Sourcify.dev</a>. Suported values: <code>true</code> & <code>false</code>.</p>
                 <br/>
                 <br/>
                 <div class="column ljex">
@@ -796,7 +806,7 @@
 
             <div class="column lj">
                 <a class="ljname" href="#enableScanners" id="enableScanners">enableScanners</a>
-                <p>Run verified contracts through Slither for vulnerability analysis. Suported values: slither.</p>
+                <p>Run verified contracts through <a href="https://github.com/crytic/slither">Slither</a> for vulnerability analysis. Suported values: <code>slither</code>.</p>
                 <br/>
                 <br/>
                 <div class="column ljex">
@@ -806,8 +816,8 @@
             </div>
 
             <div class="column lj">
-                <a class="ljname" href="#blockRecentDnsUpdates" id="blockRecentDnsUpdates">blockRecentDnsUpdates</a>
-                <p>	Checks the DNS records for a domain to see when it was last updated (Only RFC 1912 Compliant Domains). Blocks recently modified domains to prevent DNS poisioning atttacks. Supported Values: number set in Days.</p>
+                <a class="ljname" href="#blockRecentDnsUpdates" id="blockRecentDnsUpdates" target="_blank">blockRecentDnsUpdates</a>
+                <p>	Checks the DNS records for a domain to see when it was last updated (<a href="https://www.ripe.net/publications/docs/ripe-203" target="_blank">Only RFC 1912 Compliant Domains</a>). Blocks recently modified domains to prevent <a href="https://cointelegraph.com/news/breaking-curve-finance-team-warns-users-to-avoid-using-site-until-further-notice" target="_blank">DNS poisioning atttacks</a>. Supported Values: <code>number</code> set in Days.</p>
                 <br/>
                 <br/>
                 <div class="column ljex">
@@ -818,7 +828,7 @@
 
             <div class="column lj">
                 <a class="ljname" href="#useTor" id="useTor">useTor</a>
-                <p>Broadcast Transactions over a Tor Proxy. Supported Values: true, false.</p>
+                <p>Broadcast Transactions over a Tor Proxy. Supported Values: <code>true</code> & <code>false</code>.</p>
                 <br/>
                 <br/>
                 <div class="column ljex">
@@ -828,8 +838,10 @@
             </div>
 
             <div class="column lj">
-                <a class="ljname" href="#useGasHawk" id="useGasHawk">useGasHawk</a>
-                <p>Use GasHawk Beta. (Requires Setup). Only for mainnet. Supported Values: true, false.</p>
+                <a class="ljname" href="#useGasHawk" id="useGasHawk">
+                    useGasHawk
+                </a>
+                <p>Use <a href="https://gashawk.io/" target="_blank">GasHawk Beta</a>. (<a href="https://gashawk.io/#/metamask" target="_blank">Requires Setup</a>). Only for mainnet. Supported Values: <code>true</code>& <code>false</code>.</p>
                 <br/>
                 <br/>
                 <div class="column ljex">

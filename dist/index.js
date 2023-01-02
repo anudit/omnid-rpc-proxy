@@ -44,7 +44,7 @@ var import_fastify = __toESM(require("fastify"));
 var import_helmet = __toESM(require("@fastify/helmet"));
 var import_compress = __toESM(require("@fastify/compress"));
 var import_cors = __toESM(require("@fastify/cors"));
-var import_fs2 = require("fs");
+var import_static = __toESM(require("@fastify/static"));
 var import_path2 = __toESM(require("path"));
 var import_cross_fetch3 = __toESM(require("cross-fetch"));
 var import_tx = require("@ethereumjs/tx");
@@ -271,6 +271,16 @@ var numToBlacklist = {
     id: "blueshell-io/scamdb",
     name: "BlueShell",
     link: "https://blueshell.io/"
+  },
+  14: {
+    id: "rpolysec/web3_blocklist",
+    name: "rpolysec",
+    link: "https://github.com/rpolysec/web3_blocklist/blob/main/blocklist.json"
+  },
+  15: {
+    id: "rpolysec/web3_blocklist",
+    name: "rpolysec",
+    link: "https://github.com/rpolysec/web3_blocklist/blob/main/polygon_blocklist.json"
   }
 };
 
@@ -341,6 +351,9 @@ var exec3 = import_node_util3.default.promisify(require("child_process").exec);
 server.register(import_helmet.default, { global: true });
 server.register(import_compress.default, { global: true });
 server.register(import_cors.default, { origin: "*" });
+server.register(import_static.default, {
+  root: import_path2.default.join(__dirname, "../public")
+});
 var MegaHash = require("megahash");
 var hashTable = new MegaHash();
 var whitelist = /* @__PURE__ */ new Set();
@@ -585,17 +598,10 @@ function processTxs(network, req) {
   });
 }
 __name(processTxs, "processTxs");
-server.get("/old", (req, reply) => __async(exports, null, function* () {
-  const stream = (0, import_fs2.readFileSync)(import_path2.default.join(__dirname, "../public/", "index.html"));
-  reply.header("Content-Security-Policy", "default-src *; style-src 'self' 'unsafe-inline' cdnjs.cloudflare.com; script-src 'self' 'unsafe-inline'; img-src data:;");
-  return reply.type("text/html").send(stream);
-}));
-server.get("/", (req, reply) => __async(exports, null, function* () {
-  const stream = (0, import_fs2.readFileSync)(import_path2.default.join(__dirname, "../public/", "demo.html"));
-  reply.header("Access-Control-Allow-Origin", "*");
+server.get("/", function(req, reply) {
   reply.header("Content-Security-Policy", "default-src *; style-src 'self' 'unsafe-inline' cdnjs.cloudflare.com fonts.googleapis.com; script-src 'self' 'unsafe-inline'; img-src data: mintlify.s3-us-west-1.amazonaws.com ;");
-  return reply.type("text/html").send(stream);
-}));
+  return reply.sendFile("demo.html");
+});
 server.get("/ping", (req, reply) => __async(exports, null, function* () {
   return reply.send({ "hello": "world" });
 }));
