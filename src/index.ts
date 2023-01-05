@@ -82,8 +82,7 @@ const netIdToEnv =  new Map<supportedNetworkIds, supportedEnvVars>([
     ['bsc', 'BSC_RPC_URL'],
     ['bsc-testnet', 'BSC_TESTNET_RPC_URL'],
     ['fantom', 'FANTOM_RPC_URL'],
-    ['fantom-testnet', 'FANTOM_TESTNET_RPC_URL'],
-    ['shardeum-testnet', 'SHARDEUM_TESTNET_RPC_URL'],
+    ['fantom-testnet', 'FANTOM_TESTNET_RPC_URL']
 ]);
 
 const networkToRpc = (netId: supportedNetworkIds): string => {
@@ -315,7 +314,7 @@ async function processTxs(network: supportedNetworkIds, req: FastifyRequest) {
 
 server.get('/', function (req, reply) {
     reply.header("Content-Security-Policy", "default-src *; style-src 'self' 'unsafe-inline' cdnjs.cloudflare.com fonts.googleapis.com; script-src 'self' 'unsafe-inline'; img-src data: mintlify.s3-us-west-1.amazonaws.com ;");
-    return reply.sendFile('demo.html');
+    return reply.sendFile('index.html');
 })
 
 server.get('/ping', async (req: FastifyRequest, reply: FastifyReply) => {
@@ -411,9 +410,9 @@ server.post('/:network', async (req: FastifyRequest, reply: FastifyReply) => {
 
     if (!isPhishing && Boolean(hashTable.get(hostname)) === false){
         const {network} = req.params as IRouteParams;
+        debugLog('req', network, body, req.query)
         if (network && netIdToEnv.get(network)){ // valid chain
             if (body['method'] == 'eth_sendRawTransaction') {
-                debugLog('req', network, body, req.query)
                 // Check for Malicious Activity
                 let resp = await processTxs(network, req)
                 return reply.send(resp);
