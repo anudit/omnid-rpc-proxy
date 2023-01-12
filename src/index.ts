@@ -75,7 +75,6 @@ const netIdToEnv =  new Map<supportedNetworkIds, supportedEnvVars>([
     ['polygon-zkevm', 'POLYGON_ZKEVM_RPC_URL'],
     ['optimism', 'OPTIMISM_RPC_URL'],
     ['optimism-testnet', 'OPTIMISM_TESTNET_RPC_URL'],
-    ['optimism-bedrock', 'OPTIMISM_BEDROCK_RPC_URL'],
     ['arbitrum', 'ARBITRUM_RPC_URL'],
     ['arbitrum-nova', 'ARBITRUM_NOVA_RPC_URL'],
     ['arbitrum-testnet', 'ARBITRUM_TESTNET_RPC_URL'],
