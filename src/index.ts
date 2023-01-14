@@ -563,11 +563,15 @@ async function compileBlacklist() {
     });
     stats.push(logStat(4, blacklist4.length));
 
-    let blacklist5: {result: Array<string>} = await fetch('https://api.cryptoscamdb.org/v1/blacklist').then(r=>r.json());
-    blacklist5['result'].forEach(e => {
-        hashTable.set(e, 5);
-    });
-    stats.push(logStat(5, blacklist5['result'].length));
+    try {
+        let blacklist5: {result: Array<string>} = await fetch('https://api.cryptoscamdb.org/v1/blacklist').then(r=>r.json());
+        blacklist5['result'].forEach(e => {
+            hashTable.set(e, 5);
+        });
+        stats.push(logStat(5, blacklist5['result'].length));
+    } catch (error) {
+
+    }
 
     let blacklist6  = await fetch('https://wallet-guard-server-prod.herokuapp.com/lists/all',{
         method: "GET",
