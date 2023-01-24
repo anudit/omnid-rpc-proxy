@@ -14,7 +14,6 @@ export interface RpcResp {
 export type supportedNetworkIds = "mainnet"
 | "mainnet-flashbots"
 | "mainnet-flashbots-fast"
-| "rinkeby"
 | "goerli"
 | "sepolia"
 | "goerli-flashbots"
@@ -157,7 +156,6 @@ export interface TestResult<T> {
 
 export type supportedEnvVars = "MAINNET_RPC_URL"
 | "SEPOLIA_RPC_URL"
-| "RINKEBY_RPC_URL"
 | "GOERLI_RPC_URL"
 | "MAINNET_FLASHBOTS_RPC_URL"
 | "MAINNET_FLASHBOTS_FAST_RPC_URL"
