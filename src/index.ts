@@ -459,21 +459,21 @@ async function clearWhitelist() {
     console.log('🟢 DefiLlama Whitelist', defillamaList['protocols'].length);
 
 
-    let dapplist: DapplistResponse = await fetch('https://api2.thedapplist.com/api/v2/proposals/listed?offset=0&limit=1000000').then(r=>r.json());
-    let dapplistCount = 0;
-    Object.values(dapplist.data.list).forEach((dapp)=>{
-        try {
-            if(dapp.numberOfVotes >= 5){
-                let url = new URL(dapp.url).hostname.replace('www.',"");
-                whitelist.add(url);
-                hashTable.delete(url);
-                dapplistCount+=1
-            }
-        } catch (error) {
-            // console.log('dapplist invalid_url', link, error);
-        }
-    })
-    console.log('🟢 Dapplist Whitelist',  dapplistCount);
+    // let dapplist: DapplistResponse = await fetch('https://api2.thedapplist.com/api/v2/proposals/listed?offset=0&limit=1000000').then(r=>r.json());
+    // let dapplistCount = 0;
+    // Object.values(dapplist.data.list).forEach((dapp)=>{
+    //     try {
+    //         if(dapp.numberOfVotes >= 5){
+    //             let url = new URL(dapp.url).hostname.replace('www.',"");
+    //             whitelist.add(url);
+    //             hashTable.delete(url);
+    //             dapplistCount+=1
+    //         }
+    //     } catch (error) {
+    //         // console.log('dapplist invalid_url', link, error);
+    //     }
+    // })
+    // console.log('🟢 Dapplist Whitelist',  dapplistCount);
 
     let defipulselist: DefipulseResponse = await fetch('https://gist.githubusercontent.com/anudit/8df081a368397dea5ff4ce8bdfac6256/raw/9d36d984fe3ed78bd1f993c4cca22ec4093d9253/index.json').then(r=>r.json());
     let defipulselistCount = 0;
