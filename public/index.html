@@ -753,6 +753,28 @@
                     <div class="mm"></div>
                 </div>
             </div>
+            <div class="card">
+                <div>
+                    <div>
+                        <div>
+                            <p style="margin-right:10px;">🔵</p>
+                        </div>
+                        <div>
+                            <p>Base</p>
+                            <p class="secondary">Goerli Testnet</p>
+                        </div>
+                    </div>
+                    <div id="base-testnet">
+                        <span class="status"></span>
+                        <span class="blockNumber">0</span>
+                    </div>
+                </div>
+                <div>
+                    <div class="copy" onclick="copyRpc('base-testnet')"></div>
+                    <input value="https://rpc.omnid.space/base-testnet"  disabled="true" />
+                    <div class="mm"></div>
+                </div>
+            </div>
         </div>
 
         <div class="row hero" style="align-items: flex-start;">
@@ -1009,6 +1031,12 @@
                 chainId: '0x66EED',
                 chainName: 'Omnid Arbitrum Testnet',
                 blockExplorer: 'https://goerli-rollup-explorer.arbitrum.io'
+            },
+            'base-testnet': {
+                rpc: `${window.location.origin}/base-testnet`,
+                chainId: '0x14A33',
+                chainName: 'Omnid Base Testnet',
+                blockExplorer: 'https://goerli.basescan.org'
             }
         }
         Object.freeze(networks);

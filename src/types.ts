@@ -29,6 +29,7 @@ export type supportedNetworkIds = "mainnet"
 | "bsc-testnet"
 | "fantom"
 | "fantom-testnet"
+| "base-testnet"
 | "manual";
 
 export interface Dictionary<T> {
@@ -172,6 +173,7 @@ export type supportedEnvVars = "MAINNET_RPC_URL"
 | "BSC_TESTNET_RPC_URL"
 | "FANTOM_RPC_URL"
 | "FANTOM_TESTNET_RPC_URL"
+| "BASE_TESTNET_RPC_URL"
 | "TENDERLY_USER"
 | "TENDERLY_PROJECT"
 | "TENDERLY_ACCESS_KEY"
@@ -183,6 +185,7 @@ export type supportedEnvVars = "MAINNET_RPC_URL"
 | "OPTIMISMSCAN_API_KEY"
 | "BSCSCAN_API_KEY"
 | "FTMSCAN_API_KEY"
+| "BASE_API_KEY"
 | "PORT"
 | "DEBUG"
 
