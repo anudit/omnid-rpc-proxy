@@ -31,7 +31,7 @@ const contractAbi = [
 		"type": "function"
 	}
 ]
-const RPC = "http://127.0.0.1:80/shardeum-testnet"
+const RPC = "http://127.0.0.1:80/goerli"
 
 
 async function deployContract(){

@@ -336,6 +336,20 @@ function getTokenLists() {
 __name(getTokenLists, "getTokenLists");
 var tokenlists_default = getTokenLists;
 
+// src/ratelimit.ts
+var import_ratelimit = require("@upstash/ratelimit");
+var import_redis = require("@upstash/redis");
+var ratelimit = new import_ratelimit.Ratelimit({
+  redis: new import_redis.Redis({
+    url: getEnv("RATELIMIT_UPSTASH_REDIS_REST_URL"),
+    token: getEnv("RATELIMIT_UPSTASH_REDIS_REST_TOKEN")
+  }),
+  limiter: import_ratelimit.Ratelimit.slidingWindow(100, "10 s"),
+  timeout: 1e3,
+  analytics: true
+});
+var ratelimit_default = ratelimit;
+
 // src/index.ts
 "strict";
 var server = (0, import_fastify.default)({ logger: false });
@@ -354,6 +368,7 @@ var whitelist = /* @__PURE__ */ new Set();
 var SIMULATE_URL = `https://api.tenderly.co/api/v1/account/${getEnv("TENDERLY_USER")}/project/${getEnv("TENDERLY_PROJECT")}/simulate`;
 var proxyUrl = "socks5://0.0.0.0:9150";
 var tokenList = [];
+var RATELIMIT_ENABLED = getEnv("RATELIMIT_ENABLED") === "true";
 var convo = new import_sdk.Convo(getEnv("CONVO_API_KEY"));
 var computeConfig = {
   alchemyApiKey: getEnv("ALCHEMY_API_KEY"),
@@ -673,13 +688,19 @@ server.post("/lifejacket/:jacket", (req, reply) => __async(exports, null, functi
     return reply.send({ success: false, error: `Invalid LifeJacket, supported ${supportedJackets.toString()}` });
 }));
 server.post("/:network", (req, reply) => __async(exports, null, function* () {
-  let { hostname } = req;
+  let { hostname, ip } = req;
   const body = req.body;
   let isPhishing = checkForPhishing(hostname);
   if (!isPhishing && Boolean(hashTable.get(hostname)) === false) {
     const { network } = req.params;
     debugLog("req", network, body, req.query);
     if (network && netIdToEnv.get(network)) {
+      if (RATELIMIT_ENABLED) {
+        const { success: underRatelimit } = yield ratelimit_default.limit(ip);
+        if (underRatelimit === false) {
+          return reply.send({ error: "Ratelimit Exceeded" });
+        }
+      }
       if (body["method"] == "eth_sendRawTransaction") {
         let resp = yield processTxs(network, req);
         return reply.send(resp);

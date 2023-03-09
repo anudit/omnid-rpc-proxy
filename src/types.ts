@@ -188,6 +188,9 @@ export type supportedEnvVars = "MAINNET_RPC_URL"
 | "BASE_API_KEY"
 | "PORT"
 | "DEBUG"
+| "RATELIMIT_ENABLED"
+| "RATELIMIT_UPSTASH_REDIS_REST_URL"
+| "RATELIMIT_UPSTASH_REDIS_REST_TOKEN"
 
 export type SupportedJackets = "mythril" | "slither";
 

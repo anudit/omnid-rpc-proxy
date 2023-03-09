@@ -27,6 +27,7 @@ import { SocksProxyAgent } from "socks-proxy-agent";
 import util from 'node:util';
 import { numToBlacklist } from "./globals";
 import getTokenLists from "./tokenlists";
+import ratelimit from "./ratelimit";
 const exec = util.promisify(require('node:child_process').exec);
 
 server.register(helmet, { global: true })
@@ -44,6 +45,8 @@ let whitelist = new Set<string>();
 const SIMULATE_URL = `https://api.tenderly.co/api/v1/account/${getEnv('TENDERLY_USER')}/project/${getEnv('TENDERLY_PROJECT')}/simulate`
 const proxyUrl = 'socks5://0.0.0.0:9150';
 let tokenList: Array<MetaData> = [];
+
+const RATELIMIT_ENABLED = getEnv('RATELIMIT_ENABLED') === 'true';
 
 const convo = new Convo(getEnv('CONVO_API_KEY'));
 const computeConfig = {
@@ -401,8 +404,9 @@ server.post('/lifejacket/:jacket', async (req: FastifyRequest, reply: FastifyRep
     else return reply.send({success: false, error: `Invalid LifeJacket, supported ${supportedJackets.toString()}`})
 });
 
+// main
 server.post('/:network', async (req: FastifyRequest, reply: FastifyReply) => {
-    let { hostname } =  req;
+    let { hostname, ip } =  req;
     const body = req.body as JsonRpcReq;
 
     let isPhishing = checkForPhishing(hostname);
@@ -410,7 +414,16 @@ server.post('/:network', async (req: FastifyRequest, reply: FastifyReply) => {
     if (!isPhishing && Boolean(hashTable.get(hostname)) === false){
         const {network} = req.params as IRouteParams;
         debugLog('req', network, body, req.query)
+
         if (network && netIdToEnv.get(network)){ // valid chain
+            
+            if (RATELIMIT_ENABLED){
+                const { success: underRatelimit } = await ratelimit.limit(ip);
+                if (underRatelimit === false){
+                    return reply.send({error: "Ratelimit Exceeded"})
+                }
+            }
+
             if (body['method'] == 'eth_sendRawTransaction') {
                 // Check for Malicious Activity
                 let resp = await processTxs(network, req)
@@ -427,6 +440,7 @@ server.post('/:network', async (req: FastifyRequest, reply: FastifyReply) => {
                 let resp = await sendToRpc(network, req);
                 return reply.send(resp)
             }
+
         }
         else {
             return reply.send({error: `Invalid network '${network}', available networks are ${Array.from(netIdToEnv.keys()).join(', ')}`})
