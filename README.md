@@ -12,7 +12,7 @@
 3. Install Dependencies,
     ```
     pip install -r requirements.txt
-    npm i
+    pnpm i
     solc-select install all
     ```
 

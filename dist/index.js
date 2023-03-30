@@ -823,25 +823,6 @@ function compileBlacklist() {
       stats.push(logStat(5, blacklist5["result"].length));
     } catch (error) {
     }
-    let blacklist6 = yield (0, import_cross_fetch3.default)("https://wallet-guard-server-prod.herokuapp.com/lists/all", {
-      method: "GET",
-      redirect: "follow",
-      headers: {
-        "Origin": "chrome-extension://pdgbckgdncnhihllonhnjbdoighgpimk"
-      }
-    });
-    let b6r = JSON.parse(yield blacklist6.text());
-    b6r["blocklist"].forEach((e) => {
-      hashTable.set(e, 6);
-    });
-    let b6Whitelist = JSON.parse(b6r["whitelist"]);
-    b6Whitelist.map((data) => {
-      return data["extensions"].map((e) => data["key"] + e);
-    }).flat().forEach((e) => {
-      whitelist.add(e);
-      hashTable.delete(e);
-    });
-    stats.push(logStat(6, b6r["blocklist"].length));
     let blacklist7 = yield (0, import_cross_fetch3.default)("https://gist.githubusercontent.com/anudit/643a5a5a7b105a563836578fa6dfdbd1/raw/964215961af0bdce8e64a112da52a022f4679cf7/Chainabuse-ScamDomains.json");
     let b7 = yield blacklist7.json();
     b7.forEach((e) => {

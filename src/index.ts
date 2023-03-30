@@ -587,26 +587,6 @@ async function compileBlacklist() {
 
     }
 
-    let blacklist6  = await fetch('https://wallet-guard-server-prod.herokuapp.com/lists/all',{
-        method: "GET",
-        redirect: 'follow',
-        headers:{
-            'Origin': 'chrome-extension://pdgbckgdncnhihllonhnjbdoighgpimk'
-        }
-    })
-    let b6r: { blocklist: Array<string>, whitelist: string } = JSON.parse(await blacklist6.text())
-    b6r['blocklist'].forEach(e => {
-        hashTable.set(e, 6);
-    });
-    let b6Whitelist: Array<{extensions: Array<string>, key: string}>  = JSON.parse(b6r['whitelist']);
-    b6Whitelist.map((data)=>{
-        return data['extensions'].map(e=>data['key']+e)
-    }).flat().forEach(e => {
-        whitelist.add(e);
-        hashTable.delete(e);
-    });
-    stats.push(logStat(6, b6r['blocklist'].length));
-
     let blacklist7 = await fetch('https://gist.githubusercontent.com/anudit/643a5a5a7b105a563836578fa6dfdbd1/raw/964215961af0bdce8e64a112da52a022f4679cf7/Chainabuse-ScamDomains.json');
     let b7: Array<string> = await blacklist7.json();
     b7.forEach(e => {
