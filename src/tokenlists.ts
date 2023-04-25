@@ -55,6 +55,31 @@ async function getTokenLists() {
         })
     }
 
+    let opTokenList: {
+    tokens: Array<{
+        chainId: number,
+        address: string,
+        name: string,
+        symbol: string,
+        decimals: number,
+        logoURI: string
+    }>} = await fetch('https://raw.githubusercontent.com/ethereum-optimism/ethereum-optimism.github.io/master/optimism.tokenlist.json').then(e=>e.json());
+    
+    for (let index = 0; index < opTokenList['tokens'].length; index++) {
+        const token = opTokenList['tokens'][index];
+        res.push({
+            "name": token.name,
+            "symbol": token.symbol,
+            "decimals": token.decimals,
+            "address": token.address,
+            "iconUrl": token.logoURI,
+            "sources": [
+                "https://github.com/ethereum-optimism/ethereum-optimism.github.io/tree/master"
+            ],
+            "chainId": token.chainId
+        })
+    }
+
     console.log('🪙 ', res.length, 'Tokens')
     return res;
 }

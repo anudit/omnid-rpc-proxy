@@ -329,6 +329,21 @@ function getTokenLists() {
         "chainId": 1
       });
     }
+    let opTokenList = yield (0, import_cross_fetch2.default)("https://raw.githubusercontent.com/ethereum-optimism/ethereum-optimism.github.io/master/optimism.tokenlist.json").then((e) => e.json());
+    for (let index = 0; index < opTokenList["tokens"].length; index++) {
+      const token = opTokenList["tokens"][index];
+      res.push({
+        "name": token.name,
+        "symbol": token.symbol,
+        "decimals": token.decimals,
+        "address": token.address,
+        "iconUrl": token.logoURI,
+        "sources": [
+          "https://github.com/ethereum-optimism/ethereum-optimism.github.io/tree/master"
+        ],
+        "chainId": token.chainId
+      });
+    }
     console.log("\u{1FA99} ", res.length, "Tokens");
     return res;
   });

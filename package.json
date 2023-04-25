@@ -23,15 +23,15 @@
   "author": "Anudit Nagar",
   "license": "ISC",
   "dependencies": {
-    "@ethereumjs/tx": "^4.1.1",
+    "@ethereumjs/tx": "^4.1.2",
     "@ethersproject/address": "^5.7.0",
     "@fastify/compress": "^6.2.1",
     "@fastify/cors": "^8.2.1",
     "@fastify/helmet": "^10.1.0",
-    "@fastify/static": "^6.9.0",
+    "@fastify/static": "^6.10.1",
     "@theconvospace/sdk": "^0.6.16",
-    "@upstash/ratelimit": "^0.4.1",
-    "@upstash/redis": "^1.20.2",
+    "@upstash/ratelimit": "^0.4.2",
+    "@upstash/redis": "^1.20.4",
     "cross-fetch": "^3.1.5",
     "dotenv": "^16.0.3",
     "eth-phishing-detect": "^1.2.0",
@@ -43,10 +43,10 @@
     "socks-proxy-agent": "^7.0.0"
   },
   "devDependencies": {
-    "@types/node": "^18.15.11",
+    "@types/node": "^18.16.0",
     "nodemon": "^2.0.22",
     "npm-run-all": "^4.1.5",
     "tsup": "^6.7.0",
-    "typescript": "^5.0.2"
+    "typescript": "^5.0.4"
   }
 }
