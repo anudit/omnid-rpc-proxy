@@ -1,11 +1,11 @@
 import util from 'node:util';
 const exec = util.promisify(require('node:child_process').exec);
 
-import { getEnv } from '../utils';
 import { lifejacketSupportedNetwork } from '../types';
+import { getEnv } from '../utils';
 
-export async function setSolidityVersion(version: string): Promise<boolean>{
-    const { stderr } = await exec(`solc-select use ${version}`);
+export async function setSolidityVersion(version: string): Promise<boolean> {
+    const { stderr } = await exec(`solc-select use ${version} --always-install`);
     if (stderr === '') return true;
     else {
         console.error(stderr);

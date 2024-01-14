@@ -1,33 +1,32 @@
 'strict'
 
-import fastify, { FastifyInstance, FastifyRequest, FastifyReply } from "fastify";
+import fastify, { FastifyInstance, FastifyReply, FastifyRequest } from "fastify";
 const server: FastifyInstance = fastify({ logger: false })
 
-import helmet from '@fastify/helmet'
-import compress from '@fastify/compress'
-import cors from '@fastify/cors'
-import staticServe from '@fastify/static'
+import compress from '@fastify/compress';
+import cors from '@fastify/cors';
+import helmet from '@fastify/helmet';
+import staticServe from '@fastify/static';
 
 // import { readFileSync } from 'fs';
-import path from 'path'
+import path from 'path';
 
+import { FeeMarketEIP1559Transaction } from '@ethereumjs/tx';
+import { getAddress, isAddress } from '@ethersproject/address';
+import { Convo } from '@theconvospace/sdk';
 import fetch from 'cross-fetch';
-const toBuffer = require('ethereumjs-util').toBuffer
-import { FeeMarketEIP1559Transaction } from '@ethereumjs/tx'
-import { Convo } from '@theconvospace/sdk'
-import { getAddress, isAddress } from '@ethersproject/address'
-const checkForPhishing = require('eth-phishing-detect');
-import { AlchemySimulationReq, AlchemySimulationResp, IQuerystring, IRouteParams, JsonRpcReq, RpcResp, lifejacketSupportedNetwork, SourifyResp, supportedNetworkIds, SupportedJackets, DoHResp, MegaHashType, blacklistIndices, Dictionary, DapplistResponse, DefipulseResponse, DappsResponse, supportedEnvVars, MetaData, WalletconnectResponse } from './types';
-import { debugLog, getEnv, getEnvJson, parseSerialFromAnswerData } from "./utils";
-import { testUsingMythril } from "./lifejackets/mythril";
-import { testUsingSlither } from "./lifejackets/slither";
 import { closest, distance } from 'fastest-levenshtein';
 import { SocksProxyAgent } from "socks-proxy-agent";
+import { testUsingSlither } from "./lifejackets/slither";
+import { AlchemySimulationReq, AlchemySimulationResp, DappsResponse, DefipulseResponse, Dictionary, DoHResp, IQuerystring, IRouteParams, JsonRpcReq, MegaHashType, MetaData, RpcResp, SourifyResp, SupportedJackets, WalletconnectResponse, blacklistIndices, lifejacketSupportedNetwork, supportedEnvVars, supportedNetworkIds } from './types';
+import { debugLog, getEnv, getEnvJson, parseSerialFromAnswerData } from "./utils";
+const toBuffer = require('ethereumjs-util').toBuffer
+const checkForPhishing = require('eth-phishing-detect');
 
 import util from 'node:util';
 import { numToBlacklist } from "./globals";
-import getTokenLists from "./tokenlists";
 import ratelimit from "./ratelimit";
+import getTokenLists from "./tokenlists";
 const exec = util.promisify(require('node:child_process').exec);
 
 server.register(helmet, { global: true })
@@ -65,11 +64,10 @@ const computeConfig = {
     DEBUG: false,
 };
 
-const netIdToEnv =  new Map<supportedNetworkIds, supportedEnvVars>([
+const netIdToEnv = new Map<supportedNetworkIds, supportedEnvVars>([
     ['mainnet', 'MAINNET_RPC_URL'],
     ['mainnet-flashbots', 'MAINNET_FLASHBOTS_RPC_URL'],
     ['mainnet-flashbots-fast', 'MAINNET_FLASHBOTS_FAST_RPC_URL'],
-    ['goerli', 'GOERLI_RPC_URL'],
     ['sepolia', 'SEPOLIA_RPC_URL'],
     ['goerli-flashbots', 'GOERLI_FLASHBOTS_RPC_URL'],
     ['polygon', 'POLYGON_RPC_URL'],
@@ -84,12 +82,13 @@ const netIdToEnv =  new Map<supportedNetworkIds, supportedEnvVars>([
     ['bsc-testnet', 'BSC_TESTNET_RPC_URL'],
     ['fantom', 'FANTOM_RPC_URL'],
     ['fantom-testnet', 'FANTOM_TESTNET_RPC_URL'],
+    ['base', 'BASE_RPC_URL'],
     ['base-testnet', 'BASE_TESTNET_RPC_URL']
 ]);
 
 const networkToRpc = (netId: supportedNetworkIds): string => {
     let envName = netIdToEnv.get(netId);
-    if (envName){
+    if (envName) {
         let urls: Array<string> = getEnvJson(envName);
         return urls[Math.floor(Math.random() * urls.length)]
     }
@@ -101,7 +100,7 @@ const networkToRpc = (netId: supportedNetworkIds): string => {
 function getMalRpcError(message: string, details: any = undefined): RpcResp {
     return {
         isMalicious: true,
-        rpcResp:{
+        rpcResp: {
             "id": 420,
             "jsonrpc": "2.0",
             "error": {
@@ -115,7 +114,7 @@ function getMalRpcError(message: string, details: any = undefined): RpcResp {
 
 async function checkAddress(address: string): Promise<RpcResp> {
     try {
-        if (isAddress(address)){
+        if (isAddress(address)) {
             let result = await convo.omnid.kits.isMalicious(getAddress(address), computeConfig);
             console.log('omnid.kits.isMalicious', getAddress(address), result);
 
@@ -128,12 +127,12 @@ async function checkAddress(address: string): Promise<RpcResp> {
             else if (result?.sdn) return getMalRpcError(`Address Flagged by OFAC`, result);
             else if (result?.tokenblacklist) return getMalRpcError(`Address Blacklisted by Stablecoin`, result);
             else if (result?.txn) return getMalRpcError(`Address/Contract Funded by Tornado Cash.`, result);
-            else return {isMalicious: false}
+            else return { isMalicious: false }
         }
-        else return {isMalicious: false}
+        else return { isMalicious: false }
 
     } catch (error) {
-        return {isMalicious: false}
+        return { isMalicious: false }
     }
 }
 
@@ -146,7 +145,7 @@ async function alchemySimulate(simData: AlchemySimulationReq): Promise<AlchemySi
             headers: {
                 'X-Access-Key': getEnv('TENDERLY_ACCESS_KEY'),
             }
-        }).then(r=>r.json());
+        }).then(r => r.json());
 
         return resp as AlchemySimulationResp;
 
@@ -161,7 +160,7 @@ async function sendToRpc(network: supportedNetworkIds, req: FastifyRequest, over
     try {
 
         let rpcUrl = network === 'manual' ? (overrideRpcUrl === "" ? query.rpcUrl : overrideRpcUrl) : networkToRpc(network);
-        if (rpcUrl !== undefined){
+        if (rpcUrl !== undefined) {
 
             // Proxy the Request without any PII.
             let reqOptions = {
@@ -176,19 +175,19 @@ async function sendToRpc(network: supportedNetworkIds, req: FastifyRequest, over
                 }
             };
             // console.log('reqOptions', reqOptions);
-            let data = await fetch(rpcUrl, reqOptions).then(e=>e.json());
+            let data = await fetch(rpcUrl, reqOptions).then(e => e.json());
 
             // console.log('sendToRpc/result', rpcUrl, data);
             return data;
 
         }
         else {
-            let {rpcResp} = getMalRpcError('Invalid RPC Url');
+            let { rpcResp } = getMalRpcError('Invalid RPC Url');
             return rpcResp;
         }
 
     } catch (error) {
-        let {rpcResp} = getMalRpcError(error as string);
+        let { rpcResp } = getMalRpcError(error as string);
         return rpcResp;
     }
 }
@@ -206,9 +205,9 @@ async function processTxs(network: supportedNetworkIds, req: FastifyRequest) {
 
     // Check `to`
     //      if malicious then revert txn
-    if (Object.keys(deserializedTxParsed).includes('to') === true){
-        let {isMalicious, rpcResp} = await checkAddress((deserializedTxParsed.to) as string);
-        if (isMalicious == true && rpcResp){
+    if (Object.keys(deserializedTxParsed).includes('to') === true) {
+        let { isMalicious, rpcResp } = await checkAddress((deserializedTxParsed.to) as string);
+        if (isMalicious == true && rpcResp) {
             rpcResp.id = body.id;
             return rpcResp; // Return if Mal intent found.
         }
@@ -219,7 +218,7 @@ async function processTxs(network: supportedNetworkIds, req: FastifyRequest) {
     let simData: AlchemySimulationReq = {
         "network_id": parseInt(deserializedTx.chainId.toString(10)),
         "from": deserializedTx.getSenderAddress().toString(),
-        "to":  deserializedTx.to ? deserializedTx.to.toString() : "",
+        "to": deserializedTx.to ? deserializedTx.to.toString() : "",
         "input": deserializedTx.data.toString('hex'),
         "gas": parseInt(deserializedTx.gasLimit.toString(10)),
         "gas_price": gas_price.toString(10),
@@ -230,14 +229,14 @@ async function processTxs(network: supportedNetworkIds, req: FastifyRequest) {
     }
     let alResp = await alchemySimulate(simData);
 
-    if (alResp != undefined && alResp != false && 'transaction_info' in alResp && alResp.transaction_info != undefined){
+    if (alResp != undefined && alResp != false && 'transaction_info' in alResp && alResp.transaction_info != undefined) {
         console.log('Sim Successful')
         for (let index = 0; index < alResp.transaction_info.logs.length; index++) {
             const logData = alResp.transaction_info.logs[index];
 
             // Scan through the events emitted for malicious addresses.
-            if (logData.name === 'Approval' || logData.name === 'Transfer'){
-                let {isMalicious, rpcResp} = await checkAddress(logData.inputs[1].value);
+            if (logData.name === 'Approval' || logData.name === 'Transfer') {
+                let { isMalicious, rpcResp } = await checkAddress(logData.inputs[1].value);
                 // console.log('logcheck', getAddress(deserializedTxParsed.to), isMalicious, rpcResp);
                 if (isMalicious === true) return rpcResp;
             }
@@ -247,32 +246,32 @@ async function processTxs(network: supportedNetworkIds, req: FastifyRequest) {
     }
 
     // test blockUnverifiedContracts
-    if (network != 'manual' && 'blockUnverifiedContracts' in query && query.blockUnverifiedContracts === 'true'){
+    if (network != 'manual' && 'blockUnverifiedContracts' in query && query.blockUnverifiedContracts === 'true') {
         let verificationReq = await fetch(`https://sourcify.dev/server/check-all-by-addresses?addresses=${deserializedTxParsed?.to}&chainIds=1,4,11155111,137,80001,10,42161,421611`);
         let verificationResp;
         if (verificationReq.ok === true) {
             verificationResp = await verificationReq.json() as SourifyResp
-            if (Object.keys(verificationResp).includes('status')){ // mean unverified.
-                let {rpcResp} = getMalRpcError('The contract is unverified');
+            if (Object.keys(verificationResp).includes('status')) { // mean unverified.
+                let { rpcResp } = getMalRpcError('The contract is unverified');
                 return rpcResp;
             };
         }
         else {
-            let {rpcResp} = getMalRpcError('Sourcify Request Failed');
+            let { rpcResp } = getMalRpcError('Sourcify Request Failed');
             return rpcResp;
         }
 
     }
 
     // test enableScanners
-    if (network in ['mainnet', 'polygon', 'polygon-testnet'] && query?.enableScanners !== undefined && deserializedTxParsed.to !== undefined){
+    if (network in ['mainnet', 'polygon', 'polygon-testnet'] && query?.enableScanners !== undefined && deserializedTxParsed.to !== undefined) {
         let networkId = network as lifejacketSupportedNetwork;
         let scanners = query.enableScanners.split(',');
         for (let index = 0; index < scanners.length; index++) {
             const scanner = scanners[index];
-            if (scanner === 'slither'){
+            if (scanner === 'slither') {
                 let slTest = await testUsingSlither(networkId, deserializedTxParsed.to);
-                if (slTest.results.length>0){
+                if (slTest.results.length > 0) {
                     return getMalRpcError('Slither detected possible attack vectors');
                 }
             }
@@ -286,16 +285,16 @@ async function processTxs(network: supportedNetworkIds, req: FastifyRequest) {
     }
 
     // test blockRecentDnsUpdates
-    if (query?.blockRecentDnsUpdates != undefined && Boolean(parseInt(query.blockRecentDnsUpdates)) === true){
+    if (query?.blockRecentDnsUpdates != undefined && Boolean(parseInt(query.blockRecentDnsUpdates)) === true) {
         let days = parseInt(query.blockRecentDnsUpdates);
         let dnsQuery = await fetch(`https://dns.google/resolve?name=${req.hostname}&type=SOA`);
         if (dnsQuery.ok === true) {
             const dnsQueryResp = await dnsQuery.json() as DoHResp;
-            if (dnsQueryResp.Answer.length > 0 && parseSerialFromAnswerData(dnsQueryResp.Answer[0].data) != false){
+            if (dnsQueryResp.Answer.length > 0 && parseSerialFromAnswerData(dnsQueryResp.Answer[0].data) != false) {
                 let dtUpdated = parseSerialFromAnswerData(dnsQueryResp.Answer[0].data);
-                if (dtUpdated !== false){
-                    let diffDays = (Date.now() - dtUpdated.valueOf()) / (60*60*24*1000);
-                    if (diffDays <= days){
+                if (dtUpdated !== false) {
+                    let diffDays = (Date.now() - dtUpdated.valueOf()) / (60 * 60 * 24 * 1000);
+                    if (diffDays <= days) {
                         let { rpcResp } = getMalRpcError("The domain's DNS has been changed recently.");
                         return rpcResp;
                     }
@@ -305,7 +304,7 @@ async function processTxs(network: supportedNetworkIds, req: FastifyRequest) {
     }
 
     // Use Gas Hawk, enable only on mainnet.
-    if (network === 'mainnet' && query?.useGasHawk != undefined && query.useGasHawk === 'true'){
+    if (network === 'mainnet' && query?.useGasHawk != undefined && query.useGasHawk === 'true') {
         return await sendToRpc('manual', req, 'https://beta-be.gashawk.io:3001/proxy/rpc');
     }
 
@@ -320,64 +319,64 @@ server.get('/', function (req, reply) {
 })
 
 server.get('/ping', async (req: FastifyRequest, reply: FastifyReply) => {
-    return reply.send({'hello':'world'})
+    return reply.send({ 'hello': 'world' })
 })
 
 server.get('/blacklist', async (req: FastifyRequest, reply: FastifyReply) => {
-    reply.headers({ 'Cache-Control': `max-age=${24*60*60}` });
+    reply.headers({ 'Cache-Control': `max-age=${24 * 60 * 60}` });
     return reply.send(hashTable.stats())
 })
 
 server.get('/whitelist', async (req: FastifyRequest, reply: FastifyReply) => {
-    reply.headers({ 'Cache-Control': `max-age=${24*60*60}` });
+    reply.headers({ 'Cache-Control': `max-age=${24 * 60 * 60}` });
     return reply.send(Array.from(whitelist.values()));
 })
 
 server.get('/tokenlist', async (req: FastifyRequest, reply: FastifyReply) => {
-    reply.headers({ 'Cache-Control': `max-age=${24*60*60}` });
-    return reply.send({tokens: tokenList?.length});
+    reply.headers({ 'Cache-Control': `max-age=${24 * 60 * 60}` });
+    return reply.send({ tokens: tokenList?.length });
 })
 
 server.get('/tor', async (req: FastifyRequest, reply: FastifyReply) => {
     try {
         const { stdout, stderr } = await exec('cat /var/lib/tor/hidden_service/hostname');
-        if(stderr == "") {
-            return reply.send({'domain': stdout.replace('\n', '')});
+        if (stderr == "") {
+            return reply.send({ 'domain': stdout.replace('\n', '') });
         }
         else {
-            return reply.send({'domain': false, 'error': stderr});
+            return reply.send({ 'domain': false, 'error': stderr });
         }
     } catch (error) {
-        return reply.send({'domain': false, 'error': error});
+        return reply.send({ 'domain': false, 'error': error });
     }
 })
 
 server.get('/blacklist/*', async (req: FastifyRequest, reply: FastifyReply) => {
-    reply.headers({ 'Cache-Control': `max-age=${24*60*60}` })
-    const params = req.params as {'*': string};
+    reply.headers({ 'Cache-Control': `max-age=${24 * 60 * 60}` })
+    const params = req.params as { '*': string };
     const res = hashTable.get(params['*']);
-    if (res === undefined) return reply.send({'blacklisted': false})
+    if (res === undefined) return reply.send({ 'blacklisted': false })
     else {
         let closestValid = closest(params['*'], Array.from(whitelist));
         let closestScore = distance(params['*'], closestValid);
-        return reply.send({'blacklisted': true, 'list': numToBlacklist[res], 'closestWhitelisted': {url: closestValid, distance: closestScore}})
+        return reply.send({ 'blacklisted': true, 'list': numToBlacklist[res], 'closestWhitelisted': { url: closestValid, distance: closestScore } })
     }
 })
 
 server.get('/malicious/:ethAddress', async (req: FastifyRequest, reply: FastifyReply) => {
-    reply.headers({ 'Cache-Control': `max-age=${24*60*60}` })
-    const params = req.params as {'ethAddress': string};
+    reply.headers({ 'Cache-Control': `max-age=${24 * 60 * 60}` })
+    const params = req.params as { 'ethAddress': string };
     const res = await checkAddress(params['ethAddress']);
     return reply.send(res);
 })
 
 server.get('/tokendeets/:ethAddress', async (req: FastifyRequest, reply: FastifyReply) => {
-    reply.headers({ 'Cache-Control': `max-age=${24*60*60}` })
-    const params = req.params as {'ethAddress': string};
+    reply.headers({ 'Cache-Control': `max-age=${24 * 60 * 60}` })
+    const params = req.params as { 'ethAddress': string };
     if (Boolean(params?.ethAddress) === false) reply.send([]);
     let resTokens: Array<MetaData> = [];
     for (let i = 0; i < tokenList.length; i++) {
-        if (Boolean(tokenList[i]?.address) && tokenList[i]?.address.toLowerCase() === params?.ethAddress.toLowerCase()){
+        if (Boolean(tokenList[i]?.address) && tokenList[i]?.address.toLowerCase() === params?.ethAddress.toLowerCase()) {
             resTokens.push(tokenList[i]);
         };
     }
@@ -385,12 +384,12 @@ server.get('/tokendeets/:ethAddress', async (req: FastifyRequest, reply: Fastify
 })
 
 server.post('/lifejacket/:jacket', async (req: FastifyRequest, reply: FastifyReply) => {
-    const supportedJackets : Array<SupportedJackets> = ['slither', 'mythril'];
-    const {jacket} = req.params as {jacket: SupportedJackets};
-    if(supportedJackets.includes(jacket)){
-        const {network, address} = req.body as {network: string, address: string};
-        if(network != undefined && address != undefined && isAddress(address)){
-            if (jacket === 'slither'){
+    const supportedJackets: Array<SupportedJackets> = ['slither', 'mythril'];
+    const { jacket } = req.params as { jacket: SupportedJackets };
+    if (supportedJackets.includes(jacket)) {
+        const { network, address } = req.body as { network: string, address: string };
+        if (network != undefined && address != undefined && isAddress(address)) {
+            if (jacket === 'slither') {
                 let sr = await testUsingSlither(network as lifejacketSupportedNetwork, address);
                 return reply.send(sr);
             }
@@ -399,28 +398,28 @@ server.post('/lifejacket/:jacket', async (req: FastifyRequest, reply: FastifyRep
             //     return reply.send(sr)
             // }
         }
-        else return reply.send({success: false, error: "Invalid body params, network or address"})
+        else return reply.send({ success: false, error: "Invalid body params, network or address" })
     }
-    else return reply.send({success: false, error: `Invalid LifeJacket, supported ${supportedJackets.toString()}`})
+    else return reply.send({ success: false, error: `Invalid LifeJacket, supported ${supportedJackets.toString()}` })
 });
 
 // main
 server.post('/:network', async (req: FastifyRequest, reply: FastifyReply) => {
-    let { hostname, ip } =  req;
+    let { hostname, ip } = req;
     const body = req.body as JsonRpcReq;
 
     let isPhishing = checkForPhishing(hostname);
 
-    if (!isPhishing && Boolean(hashTable.get(hostname)) === false){
-        const {network} = req.params as IRouteParams;
+    if (!isPhishing && Boolean(hashTable.get(hostname)) === false) {
+        const { network } = req.params as IRouteParams;
         debugLog('req', network, body, req.query)
 
-        if (network && netIdToEnv.get(network)){ // valid chain
-            
-            if (RATELIMIT_ENABLED){
+        if (network && netIdToEnv.get(network)) { // valid chain
+
+            if (RATELIMIT_ENABLED) {
                 const { success: underRatelimit } = await ratelimit.limit(ip);
-                if (underRatelimit === false){
-                    return reply.send({error: "Ratelimit Exceeded"})
+                if (underRatelimit === false) {
+                    return reply.send({ error: "Ratelimit Exceeded" })
                 }
             }
 
@@ -431,9 +430,9 @@ server.post('/:network', async (req: FastifyRequest, reply: FastifyReply) => {
             }
             else if (body['method'] == 'web3_clientVersion') {
                 return reply.send({
-                    "jsonrpc":"2.0",
-                    "id":42,
-                    "result":"Omnid/Proxy/1.0.0"
+                    "jsonrpc": "2.0",
+                    "id": 42,
+                    "result": "Omnid/Proxy/1.0.0"
                 });
             }
             else {
@@ -443,11 +442,11 @@ server.post('/:network', async (req: FastifyRequest, reply: FastifyReply) => {
 
         }
         else {
-            return reply.send({error: `Invalid network '${network}', available networks are ${Array.from(netIdToEnv.keys()).join(', ')}`})
+            return reply.send({ error: `Invalid network '${network}', available networks are ${Array.from(netIdToEnv.keys()).join(', ')}` })
         }
     }
     else {
-        let {rpcResp} = getMalRpcError(`🚨 Phishing detector for the site ${hostname} has been triggered.`)
+        let { rpcResp } = getMalRpcError(`🚨 Phishing detector for the site ${hostname} has been triggered.`)
         return reply.send(rpcResp);
     }
 })
@@ -461,10 +460,10 @@ async function clearWhitelist() {
     hashTable.delete('instagram.com'); // blocked by cryptoscamdb.
     // Clear verified dapp urls from blacklist as a precaution.
 
-    let defillamaList: { protocols: Array<{url: string}> }= await fetch('https://api.llama.fi/lite/protocols2').then(r=>r.json());
+    let defillamaList: { protocols: Array<{ url: string }> } = await fetch('https://api.llama.fi/lite/protocols2').then(r => r.json());
     defillamaList['protocols'].forEach((link) => {
         try {
-            let url = new URL(link.url.replace('\n',"").replace('\r',"")).hostname.replace('www.',"");
+            let url = new URL(link.url.replace('\n', "").replace('\r', "")).hostname.replace('www.', "");
             whitelist.add(url);
             hashTable.delete(url);
         } catch (error) {
@@ -490,21 +489,21 @@ async function clearWhitelist() {
     // })
     // console.log('🟢 Dapplist Whitelist',  dapplistCount);
 
-    let defipulselist: DefipulseResponse = await fetch('https://gist.githubusercontent.com/anudit/8df081a368397dea5ff4ce8bdfac6256/raw/9d36d984fe3ed78bd1f993c4cca22ec4093d9253/index.json').then(r=>r.json());
+    let defipulselist: DefipulseResponse = await fetch('https://gist.githubusercontent.com/anudit/8df081a368397dea5ff4ce8bdfac6256/raw/9d36d984fe3ed78bd1f993c4cca22ec4093d9253/index.json').then(r => r.json());
     let defipulselistCount = 0;
-    Object.values(defipulselist.pageProps.defiList).forEach((dapp)=>{
+    Object.values(defipulselist.pageProps.defiList).forEach((dapp) => {
         try {
-            let url = new URL(dapp.url).hostname.replace('www.',"");
+            let url = new URL(dapp.url).hostname.replace('www.', "");
             whitelist.add(url);
             hashTable.delete(url);
-            defipulselistCount+=1
+            defipulselistCount += 1
         } catch (error) {
             // console.log('dapplist invalid_url', link, error);
         }
     })
-    console.log('🟢 DefiPulse Whitelist',  defipulselistCount);
+    console.log('🟢 DefiPulse Whitelist', defipulselistCount);
 
-    let dappsResp: DappsResponse = await fetch('https://dap.ps/metadata/all').then(r=>r.json());
+    let dappsResp: DappsResponse = await fetch('https://dap.ps/metadata/all').then(r => r.json());
     let dappsCount = 0;
     let dappsList = Object.values(dappsResp)
     for (let i = 0; i < dappsList.length; i++) {
@@ -513,27 +512,27 @@ async function clearWhitelist() {
             let url = new URL(dapp.details.url).hostname;
             whitelist.add(url);
             hashTable.delete(url);
-            dappsCount+=1
+            dappsCount += 1
         } catch (error) {
             console.log(error);
             continue;
         }
     }
-    console.log('🟢 Dap.ps Whitelist',  dappsCount);
+    console.log('🟢 Dap.ps Whitelist', dappsCount);
 
-    let walletconnectlist: Array<WalletconnectResponse> = await fetch('https://gist.githubusercontent.com/anudit/a88c5888dcfb7b9cbf14a57d8eca61ad/raw/c9e02047a31989715249c9251e828fbab15d8140/links.json').then(r=>r.json());
+    let walletconnectlist: Array<WalletconnectResponse> = await fetch('https://gist.githubusercontent.com/anudit/a88c5888dcfb7b9cbf14a57d8eca61ad/raw/c9e02047a31989715249c9251e828fbab15d8140/links.json').then(r => r.json());
     let walletconnectlistCount = 0;
-    walletconnectlist.forEach((dapp)=>{
+    walletconnectlist.forEach((dapp) => {
         try {
-            let url = new URL(dapp.homepage).hostname.replace('www.',"");
+            let url = new URL(dapp.homepage).hostname.replace('www.', "");
             whitelist.add(url);
             hashTable.delete(url);
-            walletconnectlistCount+=1
+            walletconnectlistCount += 1
         } catch (error) {
             // console.log('walletconnect invalid_url', link, error);
         }
     })
-    console.log('🟢 Walletconnect Whitelist',  walletconnectlistCount);
+    console.log('🟢 Walletconnect Whitelist', walletconnectlistCount);
 
 }
 
@@ -544,33 +543,33 @@ async function compileBlacklist() {
     console.log('Compiling Blacklist');
     let stats = []
 
-    const logStat = (tag: blacklistIndices, len = 0): Dictionary<any> =>{
+    const logStat = (tag: blacklistIndices, len = 0): Dictionary<any> => {
         let htlen = hashTable.stats()['numKeys'];
         let diff = htlen - prev;
-        let ret = {'Name':numToBlacklist[tag].id, 'Length':len, 'Unique Added':`${diff.toLocaleString()} [+${(diff/len*100).toFixed(2)}%]`, 'Total':htlen}
+        let ret = { 'Name': numToBlacklist[tag].id, 'Length': len, 'Unique Added': `${diff.toLocaleString()} [+${(diff / len * 100).toFixed(2)}%]`, 'Total': htlen }
         prev = htlen;
         return ret;
     }
 
-    let blacklist1: Array<string> = await fetch('https://raw.githubusercontent.com/409H/EtherAddressLookup/master/blacklists/domains.json').then(r=>r.json());
+    let blacklist1: Array<string> = await fetch('https://raw.githubusercontent.com/409H/EtherAddressLookup/master/blacklists/domains.json').then(r => r.json());
     blacklist1.forEach((link: string) => {
         hashTable.set(link, 1);
     });
     stats.push(logStat(1, blacklist1.length));
 
-    let blacklist2: {blacklist: Array<string>} = await fetch('https://raw.githubusercontent.com/MetaMask/eth-phishing-detect/master/src/config.json').then(r=>r.json());
+    let blacklist2: { blacklist: Array<string> } = await fetch('https://raw.githubusercontent.com/MetaMask/eth-phishing-detect/master/src/config.json').then(r => r.json());
     blacklist2['blacklist'].forEach((link: string) => {
         hashTable.set(link, 2);
     });
     stats.push(logStat(2, blacklist2['blacklist'].length));
 
-    let blacklist3: Array<{id:string}> = await fetch('https://raw.githubusercontent.com/MyEtherWallet/ethereum-lists/master/src/urls/urls-darklist.json').then(r=>r.json());
+    let blacklist3: Array<{ id: string }> = await fetch('https://raw.githubusercontent.com/MyEtherWallet/ethereum-lists/master/src/urls/urls-darklist.json').then(r => r.json());
     blacklist3.forEach(e => {
         hashTable.set(e.id, 3);
     });
     stats.push(logStat(3, blacklist3.length));
 
-    let blacklist4: Array<string> = await fetch('https://raw.githubusercontent.com/DAOBuidler/MetaShieldExtension/main/function/data/domain_blacklist.json').then(r=>r.json());
+    let blacklist4: Array<string> = await fetch('https://raw.githubusercontent.com/DAOBuidler/MetaShieldExtension/main/function/data/domain_blacklist.json').then(r => r.json());
     blacklist4.forEach(e => {
         let link = e.replace("'", "").replace("http://", "").replace("https://", "");
         hashTable.set(link, 4);
@@ -578,7 +577,7 @@ async function compileBlacklist() {
     stats.push(logStat(4, blacklist4.length));
 
     try {
-        let blacklist5: {result: Array<string>} = await fetch('https://api.cryptoscamdb.org/v1/blacklist').then(r=>r.json());
+        let blacklist5: { result: Array<string> } = await fetch('https://api.cryptoscamdb.org/v1/blacklist').then(r => r.json());
         blacklist5['result'].forEach(e => {
             hashTable.set(e, 5);
         });
@@ -605,7 +604,7 @@ async function compileBlacklist() {
     }
     stats.push(logStat(8, b8.length));
 
-    let blacklist9 = await fetch('https://phish.sinking.yachts/v2/all').then(r=>r.json());
+    let blacklist9 = await fetch('https://phish.sinking.yachts/v2/all').then(r => r.json());
     let b9: Array<string> = await blacklist9
     b9.forEach(e => {
         hashTable.set(e, 9);
@@ -623,20 +622,20 @@ async function compileBlacklist() {
     }
     stats.push(logStat(10, blacklist10.length));
 
-    let blacklist11: Array<string>  = await fetch('https://raw.githubusercontent.com/scamsniffer/scam-database/main/blacklist/domains.json').then(e=>e.json());
+    let blacklist11: Array<string> = await fetch('https://raw.githubusercontent.com/scamsniffer/scam-database/main/blacklist/domains.json').then(e => e.json());
     blacklist11.forEach(e => {
         hashTable.set(e, 11);
     });
     stats.push(logStat(11, blacklist11.length));
 
-    let blacklist12: Array<string>  = await fetch('https://raw.githubusercontent.com/phishfort/phishfort-lists/master/blacklists/domains.json').then(e=>e.json());
+    let blacklist12: Array<string> = await fetch('https://raw.githubusercontent.com/phishfort/phishfort-lists/master/blacklists/domains.json').then(e => e.json());
     blacklist12.forEach(e => {
         hashTable.set(e, 12);
     });
     stats.push(logStat(12, blacklist12.length));
 
-    let blacklist13: {data: Array<{scams: Array<{url:string}>}>}  = await fetch('https://raw.githubusercontent.com/blueshell-io/scamdb/bec21924d47b3391196b7bb701316a75a3ac6009/website.json').then(e=>e.json());
-    let res13 = blacklist13.data.map(e=>e.scams).flat().filter(e=>e!=null).map(d=>d.url).filter(e=>e!="");
+    let blacklist13: { data: Array<{ scams: Array<{ url: string }> }> } = await fetch('https://raw.githubusercontent.com/blueshell-io/scamdb/bec21924d47b3391196b7bb701316a75a3ac6009/website.json').then(e => e.json());
+    let res13 = blacklist13.data.map(e => e.scams).flat().filter(e => e != null).map(d => d.url).filter(e => e != "");
     res13.forEach(e => {
         try {
             let link = new URL(e).hostname;
@@ -657,7 +656,7 @@ async function rpcSet() {
 
     let stats: Array<Dictionary<any>> = []
 
-    const logStat = (net: supportedNetworkIds, len = 0): Dictionary<any> =>{
+    const logStat = (net: supportedNetworkIds, len = 0): Dictionary<any> => {
         let ret = {
             'Network': net,
             'RPC Set': len
@@ -673,11 +672,11 @@ async function rpcSet() {
 
 }
 
-server.listen({ port: parseInt(getEnv('PORT')) || 80, host: "0.0.0.0" }, (err, address)=>{
+server.listen({ port: parseInt(getEnv('PORT')) || 5003, host: "0.0.0.0" }, (err, address) => {
     rpcSet();
     compileBlacklist();
 
-    setInterval(compileBlacklist, 60*60*1000);  // Update blacklist every hour.
+    setInterval(compileBlacklist, 60 * 60 * 1000);  // Update blacklist every hour.
 
     if (!err) console.log('🚀 Server is listening on', address);
     else throw err;

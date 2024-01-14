@@ -1,5 +1,5 @@
-FROM python:3.9-alpine
-ARG PORT
+FROM python:3.10-alpine
+# ARG PORT
 
 WORKDIR /app
 COPY . .
@@ -8,7 +8,6 @@ RUN apk update && apk upgrade
 RUN apk add gcc make g++
 
 RUN pip3 install -r requirements.txt
-RUN solc-select install all
 
 RUN apk add --update nodejs npm
 RUN npm install -g pnpm
@@ -30,6 +29,6 @@ RUN chmod -R 700 /var/lib/tor
 RUN chmod 755 setup_tor.sh
 
 USER tor
-EXPOSE 8853/udp 9150/tcp 80/tcp
+EXPOSE 8001/tcp 8853/udp 9150/tcp 5003/tcp
 
 CMD ["pnpm", "startwithtor"]

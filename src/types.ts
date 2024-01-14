@@ -12,25 +12,25 @@ export interface RpcResp {
 }
 
 export type supportedNetworkIds = "mainnet"
-| "mainnet-flashbots"
-| "mainnet-flashbots-fast"
-| "goerli"
-| "sepolia"
-| "goerli-flashbots"
-| "polygon"
-| "polygon-testnet"
-| "polygon-zkevm"
-| "optimism"
-| "optimism-testnet"
-| "arbitrum"
-| "arbitrum-nova"
-| "arbitrum-testnet"
-| "bsc"
-| "bsc-testnet"
-| "fantom"
-| "fantom-testnet"
-| "base-testnet"
-| "manual";
+    | "mainnet-flashbots"
+    | "mainnet-flashbots-fast"
+    | "sepolia"
+    | "goerli-flashbots"
+    | "polygon"
+    | "polygon-testnet"
+    | "polygon-zkevm"
+    | "optimism"
+    | "optimism-testnet"
+    | "arbitrum"
+    | "arbitrum-nova"
+    | "arbitrum-testnet"
+    | "bsc"
+    | "bsc-testnet"
+    | "fantom"
+    | "fantom-testnet"
+    | "base"
+    | "base-testnet"
+    | "manual";
 
 export interface Dictionary<T> {
     [Key: string]: T;
@@ -72,7 +72,7 @@ export type SourifyResp = Array<{
     address: string;
     status: 'perfect' | 'partial' | 'false';
     chainIds: Array<string>;
-  }>;
+}>;
 
 export type DoHResp = {
     Answer: Array<{
@@ -83,7 +83,7 @@ export type DoHResp = {
 export interface AlchemySimulationReq {
     "network_id": number,
     "from": string,
-    "to":  string,
+    "to": string,
     "input": string,
     "gas": number,
     "gas_price": string,
@@ -97,7 +97,7 @@ export interface AlchemySimulationResp {
     transaction_info?: {
         logs: Array<{
             name: string;
-            inputs: Array<{value: string}>
+            inputs: Array<{ value: string }>
         }>
     }
 }
@@ -152,52 +152,52 @@ export interface TestResult<T> {
     success: boolean,
     error: string,
     cached?: boolean,
-    results:  T
+    results: T
 }
 
 export type supportedEnvVars = "MAINNET_RPC_URL"
-| "SEPOLIA_RPC_URL"
-| "GOERLI_RPC_URL"
-| "MAINNET_FLASHBOTS_RPC_URL"
-| "MAINNET_FLASHBOTS_FAST_RPC_URL"
-| "GOERLI_FLASHBOTS_RPC_URL"
-| "POLYGON_RPC_URL"
-| "POLYGON_TESTNET_RPC_URL"
-| "POLYGON_ZKEVM_RPC_URL"
-| "OPTIMISM_RPC_URL"
-| "OPTIMISM_TESTNET_RPC_URL"
-| "ARBITRUM_RPC_URL"
-| "ARBITRUM_NOVA_RPC_URL"
-| "ARBITRUM_TESTNET_RPC_URL"
-| "BSC_RPC_URL"
-| "BSC_TESTNET_RPC_URL"
-| "FANTOM_RPC_URL"
-| "FANTOM_TESTNET_RPC_URL"
-| "BASE_TESTNET_RPC_URL"
-| "TENDERLY_USER"
-| "TENDERLY_PROJECT"
-| "TENDERLY_ACCESS_KEY"
-| "CONVO_API_KEY"
-| "ALCHEMY_API_KEY"
-| "CNVSEC_ID"
-| "ETHERSCAN_API_KEY"
-| "POLYGONSCAN_API_KEY"
-| "OPTIMISMSCAN_API_KEY"
-| "BSCSCAN_API_KEY"
-| "FTMSCAN_API_KEY"
-| "BASE_API_KEY"
-| "PORT"
-| "DEBUG"
-| "RATELIMIT_ENABLED"
-| "RATELIMIT_UPSTASH_REDIS_REST_URL"
-| "RATELIMIT_UPSTASH_REDIS_REST_TOKEN"
+    | "SEPOLIA_RPC_URL"
+    | "MAINNET_FLASHBOTS_RPC_URL"
+    | "MAINNET_FLASHBOTS_FAST_RPC_URL"
+    | "GOERLI_FLASHBOTS_RPC_URL"
+    | "POLYGON_RPC_URL"
+    | "POLYGON_TESTNET_RPC_URL"
+    | "POLYGON_ZKEVM_RPC_URL"
+    | "OPTIMISM_RPC_URL"
+    | "OPTIMISM_TESTNET_RPC_URL"
+    | "ARBITRUM_RPC_URL"
+    | "ARBITRUM_NOVA_RPC_URL"
+    | "ARBITRUM_TESTNET_RPC_URL"
+    | "BSC_RPC_URL"
+    | "BSC_TESTNET_RPC_URL"
+    | "FANTOM_RPC_URL"
+    | "FANTOM_TESTNET_RPC_URL"
+    | "BASE_RPC_URL"
+    | "BASE_TESTNET_RPC_URL"
+    | "TENDERLY_USER"
+    | "TENDERLY_PROJECT"
+    | "TENDERLY_ACCESS_KEY"
+    | "CONVO_API_KEY"
+    | "ALCHEMY_API_KEY"
+    | "CNVSEC_ID"
+    | "ETHERSCAN_API_KEY"
+    | "POLYGONSCAN_API_KEY"
+    | "OPTIMISMSCAN_API_KEY"
+    | "BSCSCAN_API_KEY"
+    | "FTMSCAN_API_KEY"
+    | "BASE_API_KEY"
+    | "PORT"
+    | "DEBUG"
+    | "RATELIMIT_ENABLED"
+    | "RATELIMIT_UPSTASH_REDIS_REST_URL"
+    | "RATELIMIT_UPSTASH_REDIS_REST_TOKEN"
 
 export type SupportedJackets = "mythril" | "slither";
 
 export type blacklistIndices = 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11 | 12 | 13;
 
 export interface MegaHashType extends Map<string, blacklistIndices> {
-    stats: () => {numKeys: number}
+    stats: () => { numKeys: number }
 }
 
 export interface DapplistResponse {

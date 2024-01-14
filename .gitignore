@@ -3,3 +3,5 @@ node_modules
 notes.txt
 contracts
 phishing_data_final.json
+dist
+.DS_Store
