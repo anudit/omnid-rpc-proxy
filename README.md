@@ -36,12 +36,6 @@
 
 3. Build the image
     ```
-    docker build .
+    docker build -t rpc .
+    docker run -p 5003:5003 --name rpc rpc
     ```
-
-### Docker new
-
-```
-docker build -t rpc .
-docker run -p 5003:5003 --name rpc rpc
-```

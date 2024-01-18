@@ -1,1 +1,1 @@
-web: solc-select install all && node ./dist/index.js
+web: node ./dist/index.js

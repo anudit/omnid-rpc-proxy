@@ -29,6 +29,6 @@ RUN chmod -R 700 /var/lib/tor
 RUN chmod 755 setup_tor.sh
 
 USER tor
-EXPOSE 8001/tcp 8853/udp 9150/tcp 5003/tcp
+EXPOSE 80/tcp 8853/udp 9150/tcp 5003/tcp
 
 CMD ["pnpm", "startwithtor"]
