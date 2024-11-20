@@ -11,7 +11,7 @@
     "startwithtor": "run-p startwithtor:*",
     "startwithtor:astart": "node ./dist/index.js",
     "startwithtor:tor": "./setup_tor.sh",
-    "startwithtor:kevlar": "npx @lightclients/kevlar@latest",
+    "startwithtorx:kevlar": "npx @lightclients/kevlar@latest",
     "startdev": "nodemon ./dist/index.js",
     "test": "node test.js"
   },
