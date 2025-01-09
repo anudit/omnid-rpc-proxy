@@ -1,9 +1,7 @@
 {
   "compilerOptions": {
-    "target": "es2015",
-    "lib": [
-      "es2017"
-    ],
+    "target": "es2021",
+    "lib": ["es2021"],
     "types": ["node"],
     "module": "commonjs",
     "strict": true,
@@ -15,7 +13,5 @@
     "resolveJsonModule": true,
     "moduleResolution": "node"
   },
-  "include": [
-    "src/**/*.ts"
-  ]
+  "include": ["src/**/*.ts"]
 }
