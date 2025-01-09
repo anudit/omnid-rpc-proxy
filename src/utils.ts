@@ -9,7 +9,7 @@ export const getEnv = (envVar: supportedEnvVars) => {
 };
 
 export const getEnvJson = (envVar: supportedEnvVars) => {
-  return JSON.parse(getEnv(envVar).replaceAll(`\"`, `"`)) as Array<string>;
+  return JSON.parse(getEnv(envVar).replaceAll(`\\"`, `"`)) as Array<string>;
 };
 
 export const debugLog = (...args: any[]) => {
